@@ -2,7 +2,8 @@ package time_tracking.model.entity;
 
 public enum RoleType {
     USER("user"),
-    ADMIN("admin");
+    ADMIN("admin"),
+    UNKNOWN("unknown");
 
     private String roleName;
 
