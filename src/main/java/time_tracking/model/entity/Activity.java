@@ -10,17 +10,18 @@ public class Activity extends Entity_With_Id {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    private boolean isVerify;
-    private boolean isDeleted;
+    private StatusActivity status;
 
-    public Activity(long id, User user, String name, LocalDate startDate, LocalDate endDate, boolean isVerify, boolean isDeleted) {
+    public Activity(){
+
+    }
+    public Activity(long id, User user, String name, LocalDate startDate, LocalDate endDate, StatusActivity status) {
         super(id);
         this.user = user;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.isVerify = isVerify;
-        this.isDeleted = isDeleted;
+        this.status = status;
     }
 
     public User getUser() {
@@ -55,50 +56,81 @@ public class Activity extends Entity_With_Id {
         this.endDate = endDate;
     }
 
-    public boolean isVerify() {
-        return isVerify;
+    public StatusActivity getStatus() {
+        return status;
     }
 
-    public void setVerify(boolean verify) {
-        isVerify = verify;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
+    public void setStatus(StatusActivity status) {
+        this.status = status;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Activity)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        Activity activity = (Activity)o;
+        Activity activity = (Activity) o;
 
-        if (user != null ? !user.equals(activity.user) : activity.user != null) return false;
-        if (name != null ? !name.equals(activity.name) : activity.name != null) return false;
-        if (startDate != null ? !startDate.equals(activity.startDate) : activity.startDate != null) return false;
-        if (endDate != null ? !endDate.equals(activity.endDate) : activity.endDate != null) return false;
-        if (isVerify != activity.isVerify) return false;
-        if (isDeleted != activity.isDeleted) return false;
-        return this.getId()==activity.getId();
+        if (!user.equals(activity.user)) return false;
+        if (!name.equals(activity.name)) return false;
+        if (!startDate.equals(activity.startDate)) return false;
+        if (!endDate.equals(activity.endDate)) return false;
+        return status == activity.status;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (user.hashCode());
-        result = 31 * result + (name.hashCode());
-        result = 31 * result + (startDate.hashCode());
-        result = 31 * result + (endDate.hashCode());
-        result = 31 * result + (Boolean.hashCode(isVerify));
-        result = 31 * result + (Boolean.hashCode(isDeleted));
+        result = 31 * result + user.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + startDate.hashCode();
+        result = 31 * result + endDate.hashCode();
+        result = 31 * result + status.hashCode();
         return result;
     }
 
-    //TODO toString()
+    public static class Builder {
+        Activity instance = new Activity();
+
+        public Builder() {
+
+        }
+
+        public Builder setId(Long id) {
+            instance.setId(id);
+            return this;
+        }
+
+        public Builder setUser(User user) {
+            instance.user = user;
+            return this;
+        }
+
+        public Builder setName(String name){
+            instance.name = name;
+            return this;
+        }
+
+        public Builder setStartDate(LocalDate startDate){
+            instance.startDate = startDate;
+            return this;
+        }
+
+        public Builder setEndDate(LocalDate endDate){
+            instance.endDate = endDate;
+            return this;
+        }
+
+        public Builder setStatus(StatusActivity status){
+            instance.status = status;
+            return this;
+        }
+
+
+        public Activity build() {
+            return instance;
+        }
+
+    }
 }
