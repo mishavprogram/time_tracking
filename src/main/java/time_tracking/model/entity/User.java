@@ -10,6 +10,8 @@ public class User extends Entity_With_Id {
     private String email;
     private String passwordHash;
 
+    private User(){};
+
     public User(long id, String name, String surname, RoleType role, String email, String passwordHash) {
         super(id);
         this.name = name;
@@ -94,5 +96,40 @@ public class User extends Entity_With_Id {
                 ", passwordHash='" + passwordHash + '\'' +
                 ", role=" + role +
                 '}';
+    }
+
+    public static class Builder{
+        private User instance = new User();
+
+        public Builder(){
+
+        }
+        public Builder setId(long id){
+            instance.setId(id);
+            return this;
+        }
+        public Builder setName(String name){
+            instance.name = name;
+            return this;
+        }
+        public Builder setSurname(String surname){
+            instance.surname = surname;
+            return this;
+        }
+        public Builder setEmail(String email){
+            instance.email = email;
+            return this;
+        }
+        public Builder setPasswordHash(String passwordHash){
+            instance.passwordHash = passwordHash;
+            return this;
+        }
+        public Builder setRole(RoleType role){
+            instance.role = role;
+            return this;
+        }
+        public User getInstance(){
+            return instance;
+        }
     }
 }

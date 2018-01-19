@@ -15,10 +15,11 @@ public class ConnectionPoolHolder {
                     ds.setUrl("jdbc:mysql://localhost:3306/time_tracking_db");
                     ds.setUsername("root");
                     ds.setPassword("1111");
-                    ds.setMinIdle(5);
-                    ds.setMaxIdle(10);
+                    ds.setMinIdle(10);
+                    ds.setMaxIdle(20);
                     ds.setMaxOpenPreparedStatements(100);
                     dataSource = ds;
+                    System.out.println("datasource created. Datasource = "+dataSource+". Thread : "+Thread.currentThread().getName());
                 }
             }
         }

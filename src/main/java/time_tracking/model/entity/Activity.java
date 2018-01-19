@@ -131,6 +131,16 @@ public class Activity extends Entity_With_Id {
         public Activity build() {
             return instance;
         }
+    }
 
+    @Override
+    public String toString() {
+        return "Activity{" +
+                "user=" + user +
+                ", name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", status=" + status +
+                '}';
     }
 }

@@ -59,4 +59,13 @@ public class Order extends Entity_With_Id {
         result = 31 * result + activity.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "status=" + status +
+                ", action=" + action +
+                ", activity=" + activity +
+                '}';
+    }
 }
