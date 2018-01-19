@@ -4,12 +4,14 @@
 <head>
     <meta charset="utf-8" />
     <title>Authorisation</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    
-	<link rel="stylesheet" href="libs/bootstrap.min.css" />
-	<script src="libs/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+
+    <link rel="stylesheet" href="/bootstrap/bootstrap.min.css" />
+    <script src="/bootstrap/jquery-3.2.1.min.js"></script>
+    <script src="/bootstrap/bootstrap.js"></script>
 </head>
 <body>
+
     <div class="container">
         <form method="post" action="/">
             <h1 class="auth">Authorisation</h1>

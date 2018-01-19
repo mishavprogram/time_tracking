@@ -7,20 +7,24 @@
 <head>
     <meta charset="utf-8" />
     <title>User page</title>
+
+    <link rel="stylesheet" href="/bootstrap/bootstrap.min.css" />
+    <script src="/bootstrap/jquery-3.2.1.min.js"></script>
+    <script src="/bootstrap/bootstrap.js"></script>
     
-	<link rel="stylesheet" href="libs/bootstrap.min.css" />
-	<script src="libs/jquery-3.2.1.min.js"></script>
-    <script src="libs/bootstrap.js"></script>
-    
-    <link rel="stylesheet" type="text/css" media="screen" href="user.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/user.css" />
 </head>
 <body>
     <div class="container">
         <header>
             <h1 class="greeting">Hello, <c:out value="${sessionScope.get(\"userName\")} ${sessionScope.get(\"userSurname\")}!"/></h1>
             <nav class="navigation">
-                <input type="submit" value="Home page">
-                <input type="submit" value="Log out">
+                <form method="get" action="/userPage">
+                    <input type="submit" value="home">
+                </form>
+                <form method="get" action="/logout">
+                    <input type="submit" value="log out">
+                </form>
             </nav>
             <select class="language">
                 <option>Українська</option>
@@ -119,7 +123,9 @@
                     <input type="date">
                 </div>
                 <div class="buttons">
+                    <form method="get" action="/addingActivity">
                     <input type="submit" value="Add activity">
+                    </form>
                     <input type="submit" value="All activities">
                 </div>
             </div>

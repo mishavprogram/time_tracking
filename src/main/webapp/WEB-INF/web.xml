@@ -15,6 +15,7 @@
     <url-pattern>/logout</url-pattern>
     <url-pattern>/userPage</url-pattern>
     <url-pattern>/adminPage</url-pattern>
+    <url-pattern>/addingActivity</url-pattern>
   </servlet-mapping>
 
   <!--filter set Encoding to UTF-8-->
