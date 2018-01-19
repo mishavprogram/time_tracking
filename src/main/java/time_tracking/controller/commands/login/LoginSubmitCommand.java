@@ -31,14 +31,15 @@ public class LoginSubmitCommand extends CommandExecutor {
         String pageToGo = PagesPath.LOGIN;
         String email = request.getParameter(PARAM_EMAIL);
         String password = request.getParameter(PARAM_PASSWORD);
-        User user = userService.login(email, password);
-        if( user!=null){
-            pageToGo = getResultPageByUserRole(user);
-            request.getSession().setAttribute(Attributes.USER_ID, user.getId());
-            request.getSession().setAttribute(Attributes.USER_ROLE, user.getRole());
+        Optional<User> user = userService.login(email, password);
+        if( user.isPresent()){
+            User person = user.get();
+            pageToGo = getResultPageByUserRole(person);
+            request.getSession().setAttribute(Attributes.USER_ID, person.getId());
+            request.getSession().setAttribute(Attributes.USER_ROLE, person.getRole());
 
-            request.getSession().setAttribute(Attributes.USER_NAME, user.getName());
-            request.getSession().setAttribute(Attributes.USER_SURNAME, user.getSurname());
+            request.getSession().setAttribute(Attributes.USER_NAME, person.getName());
+            request.getSession().setAttribute(Attributes.USER_SURNAME, person.getSurname());
         }
         clearLoginDataFromRequest(request);
         return pageToGo;

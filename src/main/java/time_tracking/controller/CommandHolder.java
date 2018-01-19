@@ -4,6 +4,8 @@ import time_tracking.controller.commands.*;
 import time_tracking.controller.commands.admin.AdminPageCommand;
 import time_tracking.controller.commands.login.LoginCommand;
 import time_tracking.controller.commands.login.LoginSubmitCommand;
+import time_tracking.controller.commands.user.AddActivityCommand;
+import time_tracking.controller.commands.user.AddActivitySubmitCommand;
 import time_tracking.controller.commands.user.UserPageCommand;
 
 import java.util.HashMap;
@@ -37,6 +39,8 @@ public class CommandHolder {
         commands.put("GET:/logout", new LogoutCommand());
         commands.put("GET:/userPage", new UserPageCommand());
         commands.put("GET:/adminPage", new AdminPageCommand());
+        commands.put("GET:/addingActivity", new AddActivityCommand());
+        commands.put("POST:/addingActivity", new AddActivitySubmitCommand());
     }
 
     //TODO розібратись чому цей метод треба

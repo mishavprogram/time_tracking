@@ -8,10 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class UserPageCommand implements Command {
-    //TODO настроїти достатні властивості сесії для роботи юзера
+public class AddActivityCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        return PagesPath.USER_HOME_PAGE;
+        return PagesPath.ADDING_ACTIVITY_PAGE;
     }
 }
