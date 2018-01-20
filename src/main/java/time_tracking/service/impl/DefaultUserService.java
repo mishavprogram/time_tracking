@@ -10,7 +10,7 @@ import time_tracking.service.UserService;
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class UserServiceImpl implements UserService {
+public class DefaultUserService implements UserService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
     @Override

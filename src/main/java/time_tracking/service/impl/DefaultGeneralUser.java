@@ -11,7 +11,7 @@ import time_tracking.utils.constants.MessageKeys;
 import java.util.List;
 import java.util.Optional;
 
-public class GeneralUserImpl implements GeneralUserService {
+public class DefaultGeneralUser implements GeneralUserService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
     //TODO password from view must change in hash
