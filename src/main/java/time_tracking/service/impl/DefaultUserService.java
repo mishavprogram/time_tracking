@@ -4,6 +4,7 @@ import time_tracking.dao.ActivityDao;
 import time_tracking.dao.DaoFactory;
 import time_tracking.dao.OrderDao;
 import time_tracking.dao.UserDao;
+import time_tracking.dao.impl.JDBCDaoFactory;
 import time_tracking.model.entity.*;
 import time_tracking.service.UserService;
 
@@ -38,6 +39,8 @@ public class DefaultUserService implements UserService {
 
             OrderDao orderDao = daoFactory.createOrderDao();
             orderDao.create(order);
+
+            ((JDBCDaoFactory)daoFactory).closeDangerConnection();
         }
     }
 

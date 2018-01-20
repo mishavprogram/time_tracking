@@ -15,6 +15,7 @@ public class JDBCDaoFactory extends DaoFactory {
     public JDBCDaoFactory(){
         System.out.println("JDBC Dao Factory created. Datasource = "+dataSource);
     }
+    private Connection dangerConnection;
 
     private Connection getConnection(){
         try {
@@ -23,7 +24,16 @@ public class JDBCDaoFactory extends DaoFactory {
         } catch (SQLException e) {
             System.out.println("Dao Exception. DataSource : "+dataSource +". Thread : "+Thread.currentThread().getName());
             //throw new DaoException(e.getMessage());
-            return getDangerConnection();
+            if (dangerConnection==null) dangerConnection = getDangerConnection();
+            return dangerConnection;
+        }
+    }
+
+    public void closeDangerConnection(){
+        try {
+            dangerConnection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

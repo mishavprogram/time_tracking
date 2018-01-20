@@ -3,6 +3,7 @@ package time_tracking.dao.impl;
 import time_tracking.dao.ActivityDao;
 import time_tracking.dao.DaoFactory;
 import time_tracking.dao.exception.DaoException;
+import time_tracking.dao.mapper.impl.ActivityMapper;
 import time_tracking.model.entity.Action;
 import time_tracking.model.entity.Activity;
 import time_tracking.model.entity.StatusActivity;
@@ -25,9 +26,7 @@ public class JDBCActivityDao implements ActivityDao {
     public static final String GET_ACTIVITIES_WITHOUT_USER = "SELECT * FROM time_tracking_db.activityt ";
     public static final String GET_ACTIVITIES_WITH_USER = "SELECT * FROM time_tracking_db.activityt join usert on activityt.usert_id = usert.id and usert_id = ?";
     public static final String WITH_STATUS = " and status = ? ";
-    public static final String WITH_DAYWORK = "and activityt.id in" +
-            "(select activityt_id from activitylogt " +
-            "where dateWork = ?)";
+    public static final String WITH_WORK_IN_CURR_DAY = "and activityt.startDate<=date(?) and activityt.endDate>=date(?)";
 
     private Connection connection;
 
@@ -91,22 +90,21 @@ public class JDBCActivityDao implements ActivityDao {
         List<Activity> activities = new ArrayList<>();
         try {
             String statement = getStatement(date, user);
-
             PreparedStatement preparedStatement = getPreparedStatement(status, date, user, statement);
-
             preparedStatement.execute();
 
             ResultSet set = preparedStatement.getResultSet();
-
-            long startPosition = numberOfPortion*(sizeOfPortion-1)+1;
+            long startPosition = sizeOfPortion*numberOfPortion - sizeOfPortion+1;
             long n = 0;
             long count = 0;
+            ActivityMapper activityMapper = new ActivityMapper();
 
             while (set.next()){
                 n++;
-                count++;
-                if (n>=startPosition && count<=sizeOfPortion){
-                    //extract in write in list
+                if (n>=startPosition && count<sizeOfPortion){
+                    count++;
+                    Activity activity = activityMapper.extractFromResultSet(set);
+                    activities.add(activity);
                 }
             }
         }
@@ -131,6 +129,8 @@ public class JDBCActivityDao implements ActivityDao {
         if (date.isPresent()){
             paramIndex++;
             preparedStatement.setString(paramIndex, date.get().toString());
+            paramIndex++;
+            preparedStatement.setString(paramIndex, date.get().toString());
         }
         return preparedStatement;
     }
@@ -142,7 +142,7 @@ public class JDBCActivityDao implements ActivityDao {
                 else statement+=GET_ACTIVITIES_WITHOUT_USER;
         statement+=WITH_STATUS;
 
-        if (date.isPresent()) statement+=WITH_DAYWORK;
+        if (date.isPresent()) statement+=WITH_WORK_IN_CURR_DAY;
         return statement;
     }
 
@@ -164,10 +164,14 @@ public class JDBCActivityDao implements ActivityDao {
     public static void main(String[] args) {
         DaoFactory daoFactory = DaoFactory.getInstance();
         ActivityDao activityDao = daoFactory.createActivityDao();
-        ((JDBCActivityDao)activityDao).findAll(StatusActivity.APPROVED,
-                Optional.of(LocalDate.of(2018,1,1)),
+        List<Activity> activities = ((JDBCActivityDao)activityDao).findAll(2, 3, StatusActivity.PENDING,
+                Optional.of(LocalDate.of(2018,1,4)),
                 Optional.of(new User.Builder()
                 .setId(5)
                 .getInstance()));
+        for (Activity a:
+             activities) {
+            System.out.println(a);
+        }
     }
 }
