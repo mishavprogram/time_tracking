@@ -9,11 +9,11 @@ import java.util.List;
 public interface ActivityService {
     void setDayTimeForActivity(Activity activity, LocalDate localDate, int hours);
     
-    List<Activity> getActiveActivities();
-    List<Activity> getActiveActivities(User user);
-    List<Activity> getActiveActivities(User user, LocalDate localDate);
+    List<Activity> getActiveActivities(long numberOfPortion, long sizeOfPortion);
+    List<Activity> getActiveActivities(long numberOfPortion, long sizeOfPortion, long userId);
+    List<Activity> getActiveActivities(long numberOfPortion, long sizeOfPortion, long userId, LocalDate localDate);
 
-    List<Activity> getPendingActivities();
-    List<Activity> getPendingActivities(User user);
-    List<Activity> getPendingActivities(User user, LocalDate localDate);
+    List<Activity> getPendingActivities(long numberOfPortion, long sizeOfPortion);
+    List<Activity> getPendingActivities(long numberOfPortion, long sizeOfPortion, long userId);
+    List<Activity> getPendingActivities(long numberOfPortion, long sizeOfPortion, long userId, LocalDate localDate);
 }
