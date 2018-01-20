@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="m" uri="/WEB-INF/Paginator.tld" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 <!DOCTYPE html>
@@ -32,90 +33,30 @@
                 <option selected>English</option>
             </select>
         </header>
+
         <section class="mainSection">
             <div class="tableBlock">
                 <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Start date</th>
-                            <th>End date</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
                     <tr>
-                        <td>1</td>
-                        <td>Убить Билла</td>
-                        <td>01.01.2021</td>
-                        <td>02.02.2022</td>
-                        <td><input type="submit" value="Delete"></td>
+                        <td>name</td>
+                        <td>startDate</td>
+                        <td>endDate</td>
+                        <td>hours</td><!--Треба якось брати к-сть годин-->
+                        <td></td>
+                        <td></td>
                     </tr>
-                    <tr>
-                            <td>1</td>
-                            <td>Убить Билла</td>
-                            <td>01.01.2021</td>
-                            <td>02.02.2022</td>
-                            <td><input type="submit" value="Delete"></td>
-                        </tr>
+                    <c:forEach items="${todayActivities}" var="todayActivity">
                         <tr>
-                                <td>1</td>
-                                <td>Убить Билла</td>
-                                <td>01.01.2021</td>
-                                <td>02.02.2022</td>
-                                <td><input type="submit" value="Delete"></td>
-                            </tr>
-                            <tr>
-                                    <td>1</td>
-                                    <td>Убить Билла</td>
-                                    <td>01.01.2021</td>
-                                    <td>02.02.2022</td>
-                                    <td><input type="submit" value="Delete"></td>
-                                </tr>
-                                <tr>
-                                        <td>1</td>
-                                        <td>Убить Билла</td>
-                                        <td>01.01.2021</td>
-                                        <td>02.02.2022</td>
-                                        <td><input type="submit" value="Delete"></td>
-                                    </tr>
-                                    <tr>
-                                            <td>1</td>
-                                            <td>Убить Билла</td>
-                                            <td>01.01.2021</td>
-                                            <td>02.02.2022</td>
-                                            <td><input type="submit" value="Delete"></td>
-                                        </tr>
-                                        <tr>
-                                                <td>1</td>
-                                                <td>Убить Билла</td>
-                                                <td>01.01.2021</td>
-                                                <td>02.02.2022</td>
-                                                <td><input type="submit" value="Delete"></td>
-                                            </tr>
-                                            <tr>
-                                                    <td>1</td>
-                                                    <td>Убить Билла</td>
-                                                    <td>01.01.2021</td>
-                                                    <td>02.02.2022</td>
-                                                    <td><input type="submit" value="Delete"></td>
-                                                </tr>
-                                                <tr>
-                                                        <td>1</td>
-                                                        <td>Убить Билла</td>
-                                                        <td>01.01.2021</td>
-                                                        <td>02.02.2022</td>
-                                                        <td><input type="submit" value="Delete"></td>
-                                                    </tr>
-                                                    <tr>
-                                                            <td>1</td>
-                                                            <td>Убить Билла</td>
-                                                            <td>01.01.2021</td>
-                                                            <td>02.02.2022</td>
-                                                            <td><input type="submit" value="Delete"></td>
-                                                        </tr>                    
-
+                            <td>${todayActivity.name}</td>
+                            <td>${todayActivity.startDate.toString()}</td>
+                            <td>${todayActivity.endDate.toString()}</td>
+                            <td>${todayActivity.hours}</td>
+                            <td><form method="get"><button class="btn-primary">set time</button></form></td>
+                            <td><form method="get"><button class="btn-primary">delete activity</button></form></td>
+                        </tr>
+                    </c:forEach>
                 </table>
+                <m:display paginParamName="page" totalPages="${pages}"/>
             </div>
             <div class="rightBlock">
                 <div class="calendar">

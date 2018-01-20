@@ -1,25 +1,35 @@
 package time_tracking.service.impl;
 
+import time_tracking.dao.DaoFactory;
+import time_tracking.dao.UserDao;
 import time_tracking.model.entity.RoleType;
 import time_tracking.model.entity.User;
 import time_tracking.service.GeneralUserService;
+import time_tracking.service.exception.ServiceException;
+import time_tracking.utils.constants.MessageKeys;
 
 import java.util.List;
+import java.util.Optional;
 
 public class GeneralUserImpl implements GeneralUserService {
-    public static final String adminEmail = "mishav@ukr.net";
-    public static final String adminPasswordHash = "1";
+    private DaoFactory daoFactory = DaoFactory.getInstance();
 
-    public static final String userEmail = "zarit@ukr.net";
-    public static final String userPasswordHash = "1";
-
+    //TODO password from view must change in hash
     @Override
-    public User login(String email, String password) {
-        if (email.equals(adminEmail) && password.equals(adminPasswordHash))
-            return new User(1, "Misha","Vin", RoleType.ADMIN, adminEmail, adminPasswordHash);
-        if (email.equals(userEmail) && password.equals(userPasswordHash))
-            return new User(1,"Vitalik", "Zarit", RoleType.USER, userEmail, userPasswordHash);
-        else return null;
+    public Optional<User> login(String email, String password) {
+        UserDao userDao = daoFactory.createUserDao();
+        Optional<User> user = userDao.getUserByEmail(email);
+
+        if (user.isPresent()){
+            if (user.get().getPasswordHash().equals(password)){
+                return user;
+            }
+            else {
+                throw new ServiceException(MessageKeys.WRONG_USER_PASSWORD);
+            }
+        }
+        else
+            return Optional.empty();
     }
 
     @Override
