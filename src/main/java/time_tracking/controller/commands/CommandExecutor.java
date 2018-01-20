@@ -20,7 +20,7 @@ import java.util.Optional;
 public abstract class CommandExecutor implements Command {
     private final String nextPage;
     private RequestParamExtractor paramExtractor = new RequestParamExtractor();
-    private static final int DEFAULT_QUANTITY_VALUE=10;
+    private static final int DEFAULT_QUANTITY_VALUE=3;
     private static final int DEFAULT_OFFSET_VALUE = 0;
 
     protected CommandExecutor(String nextPage) {

@@ -45,12 +45,12 @@
                         <td></td>
                         <td></td>
                     </tr>
-                    <c:forEach items="${todayActivities}" var="todayActivity">
+                    <c:forEach items="${activities}" var="activity">
                         <tr>
-                            <td>${todayActivity.name}</td>
-                            <td>${todayActivity.startDate.toString()}</td>
-                            <td>${todayActivity.endDate.toString()}</td>
-                            <td>${todayActivity.hours}</td>
+                            <td>${activity.name}</td>
+                            <td>${activity.startDate.toString()}</td>
+                            <td>${activity.endDate.toString()}</td>
+                            <td></td>
                             <td><form method="get"><button class="btn-primary">set time</button></form></td>
                             <td><form method="get"><button class="btn-primary">delete activity</button></form></td>
                         </tr>
@@ -61,7 +61,10 @@
             <div class="rightBlock">
                 <div class="calendar">
                     <h3>Choose date:</h3>
-                    <input type="date">
+                    <form method="get" action="/userPage">
+                        <input type="date" name = "date">
+                        <input type="submit" value="chooseDay">
+                    </form>
                 </div>
                 <div class="buttons">
                     <form method="get" action="/addingActivity">
