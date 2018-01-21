@@ -2,11 +2,11 @@ package time_tracking.controller;
 
 import time_tracking.controller.commands.*;
 import time_tracking.controller.commands.admin.AdminPageCommand;
+import time_tracking.controller.commands.admin.MakeDecisionCommand;
+import time_tracking.controller.commands.admin.MakeDecisionSubmitCommand;
 import time_tracking.controller.commands.login.LoginCommand;
 import time_tracking.controller.commands.login.LoginSubmitCommand;
-import time_tracking.controller.commands.user.AddActivityCommand;
-import time_tracking.controller.commands.user.AddActivitySubmitCommand;
-import time_tracking.controller.commands.user.UserPageCommand;
+import time_tracking.controller.commands.user.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,11 +36,20 @@ public class CommandHolder {
     private void fillCommands(){
         commands.put("GET:/login", new LoginCommand());
         commands.put("POST:/login", new LoginSubmitCommand());
+
         commands.put("GET:/logout", new LogoutCommand());
+
         commands.put("GET:/userPage", new UserPageCommand());
         commands.put("GET:/adminPage", new AdminPageCommand());
+
         commands.put("GET:/addingActivity", new AddActivityCommand());
         commands.put("POST:/addingActivity", new AddActivitySubmitCommand());
+
+        commands.put("GET:/setTime", new SetTimeCommand());
+        commands.put("POST:/setTime", new SetTimeSubmitCommand());
+
+        commands.put("GET:/makeDecision", new MakeDecisionCommand());
+        commands.put("POST:/makeDecision", new MakeDecisionSubmitCommand());
     }
 
     //TODO розібратись чому цей метод треба

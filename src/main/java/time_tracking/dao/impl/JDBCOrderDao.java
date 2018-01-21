@@ -15,13 +15,20 @@ import java.util.List;
 import java.util.Optional;
 
 public class JDBCOrderDao implements OrderDao {
-    public static final String INSERT_ORDER = "INSERT INTO `time_tracking_db`.`ordert` (`action`, `status`, `activityt_id`) VALUES (?, ?, ?)";
-    public static final String SELECT_ORDER_WITH_ACTIVITY = "SELECT * FROM ordert left join activityt on activityt_id = activityt.id where ordert.status='pending'";
-    public static final String SELECT_ORDER_WITH_ACTIVITY_FOR_USER = "SELECT * FROM ordert \n" +
+    static final String INSERT_ORDER = "INSERT INTO `time_tracking_db`.`ordert` (`action`, `status`, `activityt_id`) VALUES (?, ?, ?)";
+    static final String SELECT_PENDING_ORDER_WITH_ACTIVITY = "SELECT * FROM ordert \n" +
+            "left join activityt on activityt_id = activityt.id\n" +
+            "left join usert on activityt.usert_id = usert.id\n" +
+            "where ordert.status='pending'";
+    static final String SELECT_COUNT_PENDING_ORDER_WITH_ACTIVITY = "SELECT count(*) FROM ordert \n" +
+            "left join activityt on activityt_id = activityt.id\n" +
+            "left join usert on activityt.usert_id = usert.id\n" +
+            "where ordert.status='pending'";
+    static final String SELECT_ORDER_WITH_ACTIVITY_FOR_USER = "SELECT * FROM ordert \n" +
             "join activityt on (activityt_id = activityt.id) \n" +
             "join usert on (activityt.usert_id = usert.id)\n" +
             "where ordert.status='pending' and activityt.usert_id=? ";
-    public static final int ALL_USERS_ID = -1;
+    static final int ALL_USERS_ID = -1;
     private Connection connection;
 
     public JDBCOrderDao(Connection connection) {
@@ -68,46 +75,82 @@ public class JDBCOrderDao implements OrderDao {
 
     }
 
-    //TODO
     @Override
-    public List<Order> getAllOrdersForApproving() {
-        //List<Order> orderList = new ArrayList<>();
-        //return getOrders(orderList, SELECT_ORDER_WITH_ACTIVITY, ALL_USERS_ID);
-        throw new UnsupportedOperationException();
+    public List<Order> getAllOrdersForApproving(long numberOfPortion, long sizeOfPortion) {
+        List<Order> orderList = getOrders(numberOfPortion, sizeOfPortion, SELECT_PENDING_ORDER_WITH_ACTIVITY, ALL_USERS_ID);
+        return orderList;
     }
 
     @Override
-    public List<Order> getAllOrdersForApprovingForUser(long userId) {
+    public List<Order> getAllOrdersForApprovingForUser(long numberOfPortion, long sizeOfPortion, long userId) {
+        List<Order> orderList = getOrders(numberOfPortion, sizeOfPortion, SELECT_ORDER_WITH_ACTIVITY_FOR_USER, userId);
+        return orderList;
+    }
+
+    private List<Order> getOrders(long numberOfPortion, long sizeOfPortion, String sqlStatement, long userId) {
         List<Order> orderList = new ArrayList<>();
-        return getOrders(orderList, SELECT_ORDER_WITH_ACTIVITY_FOR_USER, userId);
-    }
-
-    private List<Order> getOrders(List<Order> orderList, String sqlStatement, long userId) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            if (userId!=-1)
+            if (sqlStatement.equals(SELECT_ORDER_WITH_ACTIVITY_FOR_USER) && userId!=ALL_USERS_ID)
                 preparedStatement.setLong(1,userId);
             preparedStatement.execute();
             ResultSet set = preparedStatement.getResultSet();
 
-            OrderMapper orderMapper = new OrderMapper();
-
-            while (set.next()){
-                Order order = orderMapper.extractFromResultSet(set);
-                if (order!=null) orderList.add(order);
-            }
-
-            return orderList;
+            extractOrdersFromSetToList(numberOfPortion, sizeOfPortion, orderList, set);
         }
         catch(SQLException ex){
             throw new DaoException(ex.getMessage());
         }
+        return orderList;
+    }
+
+    @Override
+    public long getCountOfPendingOrders() {
+        long count = 0;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_COUNT_PENDING_ORDER_WITH_ACTIVITY);
+            preparedStatement.execute();
+            ResultSet set = preparedStatement.getResultSet();
+
+            if (set.isBeforeFirst()){
+                set.next();
+                count = set.getLong(1);
+            }
+        }
+        catch(SQLException ex){
+            throw new DaoException(ex.getMessage());
+        }
+        return count;
+    }
+
+    private void extractOrdersFromSetToList(long numberOfPortion, long sizeOfPortion, List<Order> orders, ResultSet set) throws SQLException {
+        long startPosition = sizeOfPortion*numberOfPortion - sizeOfPortion+1;
+        long n = 0;
+        long count = 0;
+        OrderMapper orderMapper = new OrderMapper();
+
+        while (set.next()){
+            n++;
+            if (n>=startPosition && count<sizeOfPortion){
+                count++;
+                Order order = orderMapper.extractFromResultSet(set);
+                orders.add(order);
+            }
+        }
+    }
+
+    private void extractOrdersFromSetToList(List<Order> orders, ResultSet set) throws SQLException {
+        OrderMapper orderMapper = new OrderMapper();
+        while (set.next()){
+                Order order = orderMapper.extractFromResultSet(set);
+                orders.add(order);
+            }
     }
 
     public static void main(String[] args) {
         DaoFactory daoFactory = new JDBCDaoFactory();
         OrderDao orderDao = daoFactory.createOrderDao();
-        List<Order> orderList = orderDao.getAllOrdersForApprovingForUser(5);
+        List<Order> orderList = orderDao.getAllOrdersForApproving(2,4);
         for (Order o:
              orderList) {
             System.out.println(o);

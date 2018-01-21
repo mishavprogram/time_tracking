@@ -30,4 +30,5 @@ public final class Attributes {
     public static final String LOCALE = "locale";
     public static final String BUNDLE_FILE = "bundleFile";
     public static final String ACTIVITIES = "activities";
+    public static final String ORDERS = "orders";
 }

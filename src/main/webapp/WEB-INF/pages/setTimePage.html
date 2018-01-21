@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Add activity</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    
+	<link rel="stylesheet" href="libs/bootstrap.min.css" />
+	<script src="libs/bootstrap.js"></script>
+</head>
+<body>
+    <div class="container">
+        <form>
+            <h1 class="auth">Hours spent on this date</h1>
+            <div class="field">
+                <label for="actName">Name: </label>
+                <input readonly id="actName" type="text" required>
+            </div>
+            <div class="field">
+                <label for="date">Date: </label>
+                <input readonly id="date" type="text" required>
+            </div>
+            <div class="field">
+                <label for="hours">Hours: </label>
+                <input id="hours" type="text" required>
+            </div>
+            <input type="submit" value="Set">
+        </form>
+        <aside>
+            <div>
+                <nav class="navigation">
+                    <input type="submit" value="Log out">
+                    <input type="submit" value="Home page">
+                </nav>
+                <select class="language">
+                    <option>Українська</option>
+                    <option>Російська</option>
+                    <option selected>English</option>
+                </select>
+            </div>
+            <h6>Info:</h6>
+            <textarea cols="20" rows="5" readonly></textarea>
+        </aside>
+    </div>    
+</body>
+</html>

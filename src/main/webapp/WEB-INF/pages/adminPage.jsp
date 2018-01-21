@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="m" uri="/WEB-INF/taglib/Paginator.tld" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 <!DOCTYPE html>
@@ -34,51 +35,28 @@
             </select>
         </header>
         <section class="mainSection">
-            <div class="userTable">
-                <input type="submit" value="Choose">
-                <table class="table users">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>E-mail</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>lol@yandex.ru</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>kek@yandex.ru</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>tralala@yandex.ru</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
             <div class="tableBlock">
                 <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Start date</th>
-                            <th>End date</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
                     <tr>
-                        <td>1</td>
-                        <td>Убить Билла</td>
-                        <td>01.01.2021</td>
-                        <td>02.02.2022</td>
-                        <td><input type="submit" value="Delete"></td>
+                        <td>email</td>
+                        <td>userName</td>
+                        <td>userSurname</td>
+                        <td>activityName</td>
+                        <td>action</td>
+                        <td></td><!--button to set-->
                     </tr>
-                    <tr>
-               </table>
+                    <c:forEach items="${orders}" var="order">
+                        <tr>
+                            <td>${order.userEmail}</td>
+                            <td>${order.userName}</td>
+                            <td>${order.userSurname}</td>
+                            <td>${order.activityName}</td>
+                            <td>${order.action}</td>
+                            <td><form method="get"><button class="btn-primary">confirm or reject</button></form></td>
+                        </tr>
+                    </c:forEach>
+                </table>
+                <m:display paginParamName="page" totalPages="${pages}"/>
             </div>
             <div class="rightBlock">
                 <div class="calendar">
