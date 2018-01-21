@@ -10,31 +10,33 @@ import java.sql.SQLException;
 
 public class JDBCDaoFactory extends DaoFactory {
 
-    private DataSource dataSource = ConnectionPoolHolder.getDataSource();
+    private DataSource dataSource;//ConnectionPoolHolder.getDataSource();
 
     public JDBCDaoFactory(){
         System.out.println("JDBC Dao Factory created. Datasource = "+dataSource);
     }
-    private Connection dangerConnection;
+    private Connection dangerConnection = getDangerConnection();
 
-    private Connection getConnection(){
-        try {
-            System.out.println("try to get connection. Thread : "+Thread.currentThread().getName());
-            return dataSource.getConnection();
-        } catch (SQLException e) {
-            System.out.println("Dao Exception. DataSource : "+dataSource +". Thread : "+Thread.currentThread().getName());
-            //throw new DaoException(e.getMessage());
-            if (dangerConnection==null) dangerConnection = getDangerConnection();
-            return dangerConnection;
-        }
+    private Connection getConnection() {
+        //try {
+        //  System.out.println("try to get connection. Thread : "+Thread.currentThread().getName());
+        //return dataSource.getConnection();
+        if (dangerConnection==null) dangerConnection = getDangerConnection();
+        return dangerConnection;
+        //} catch (SQLException e) {
+        //  System.out.println("Dao Exception. DataSource : "+dataSource +". Thread : "+Thread.currentThread().getName());
+        //throw new DaoException(e.getMessage());
+        //if (dangerConnection==null) dangerConnection = getDangerConnection();
+        //return dangerConnection;
+        //}
     }
 
     public void closeDangerConnection(){
-        try {
+        /*try {
             dangerConnection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override

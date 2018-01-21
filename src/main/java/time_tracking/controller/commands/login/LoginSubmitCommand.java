@@ -4,8 +4,7 @@ import time_tracking.controller.commands.CommandExecutor;
 import time_tracking.model.entity.RoleType;
 import time_tracking.model.entity.User;
 import time_tracking.service.GeneralUserService;
-import time_tracking.service.UserService;
-import time_tracking.service.impl.GeneralUserImpl;
+import time_tracking.service.impl.DefaultGeneralUser;
 import time_tracking.utils.constants.Attributes;
 import time_tracking.utils.constants.PagesPath;
 
@@ -18,7 +17,7 @@ public class LoginSubmitCommand extends CommandExecutor {
     private static final String PARAM_EMAIL = "login_email";
     private static final String PARAM_PASSWORD ="login_password";
 
-    private GeneralUserService userService = new GeneralUserImpl();
+    private GeneralUserService userService = new DefaultGeneralUser();
 
     public LoginSubmitCommand() {
         super(PagesPath.LOGIN_PAGE);

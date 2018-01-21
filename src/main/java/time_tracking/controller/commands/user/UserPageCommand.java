@@ -25,33 +25,14 @@ public class UserPageCommand extends CommandExecutor {
 
     @Override
     public String performExecute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int quantity = getLimitValueOrDefault(request);
-        if (request.getParameter(Attributes.OFFSET)!=null){
-            System.out.println("current page = "+request.getParameter(Attributes.OFFSET));
-        }
-        int offset = getOffsetValueOrDefault(request, quantity);//default - 0
-        //int totalCount = activityService.getTotalCount();
-        int totalCount = 10;
-        int totalPages = calculateOverallPagesCount(quantity, totalCount);
-
-        LocalDate dateToShow;
-        if (request.getParameter("date")!=null){
-            dateToShow = LocalDate.parse(request.getParameter("date"));
-        }
-        else dateToShow = LocalDate.now();
+        int maxCountOfElemOnPage = getLimitValueOrDefault(request);
+        LocalDate dateToShow = getLocalDateOrDefault(request, LocalDate.now());
         long userId = (long)(request.getSession().getAttribute(Attributes.USER_ID));
+        long totalCount = activityService.getCountOfPendingActivities(userId, dateToShow);
+        int totalPages = calculateOverallPagesCount(maxCountOfElemOnPage, (int)totalCount);//danger
+        int numberOfPage = getNumberOfPageOrDefault(request);
 
-        //номер порції
-        int numberOfPage = 1;
-        if (request.getParameter(Attributes.OFFSET)!=null){
-            System.out.println("current page = "+request.getParameter(Attributes.OFFSET));
-            numberOfPage = Integer.parseInt(request.getParameter(Attributes.OFFSET));
-            if (numberOfPage!=1){
-                System.out.println("ura!");
-            }
-        }
-
-        List<Activity> activities = activityService.getPendingActivities(numberOfPage, quantity, userId, dateToShow);
+        List<Activity> activities = activityService.getPendingActivities(numberOfPage, maxCountOfElemOnPage, userId, dateToShow);
         request.setAttribute(Attributes.ACTIVITIES, activities);
         request.setAttribute(Attributes.TOTAL_PAGES, totalPages);
         return PagesPath.USER_HOME_PAGE;

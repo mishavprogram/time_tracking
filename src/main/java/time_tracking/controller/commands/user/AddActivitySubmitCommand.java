@@ -1,10 +1,8 @@
 package time_tracking.controller.commands.user;
 
-import time_tracking.controller.commands.Command;
 import time_tracking.controller.commands.CommandExecutor;
-import time_tracking.dao.DaoFactory;
 import time_tracking.service.UserService;
-import time_tracking.service.impl.UserServiceImpl;
+import time_tracking.service.impl.DefaultUserService;
 import time_tracking.utils.constants.PagesPath;
 
 import javax.servlet.ServletException;
@@ -12,10 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Optional;
 
 public class AddActivitySubmitCommand extends CommandExecutor {
-    private UserService userService = new UserServiceImpl();
+    private UserService userService = new DefaultUserService();
 
     public AddActivitySubmitCommand() {
         super(PagesPath.ADDING_ACTIVITY_PAGE);

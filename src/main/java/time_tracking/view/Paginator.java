@@ -89,13 +89,14 @@ public class Paginator extends SimpleTagSupport {
     }
 
     private void printBeginTag(JspWriter out) throws IOException {
-        out.write("<div class='container'>" +
+        out.write(//"<div class='container'>" +
                 "<div class=\"col-centered center\">" +
                 "<ul class=\"pagination  \">");
     }
 
     private void printEndTag(JspWriter out) throws IOException {
-        out.print("</div></div></ul>");
+        out.print("</div></ul>");
+        //out.print("</div></div></ul>");
     }
 
 

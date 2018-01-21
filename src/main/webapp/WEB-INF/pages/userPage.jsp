@@ -60,7 +60,7 @@
             </div>
             <div class="rightBlock">
                 <div class="calendar">
-                    <h3>Choose date:</h3>
+                    <h3><c:out value="${requestScope.get(\"date\").toString()}" /></h3>
                     <form method="get" action="/userPage">
                         <input type="date" name = "date">
                         <input type="submit" value="chooseDay">

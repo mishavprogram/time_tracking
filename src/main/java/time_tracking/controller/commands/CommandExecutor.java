@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Optional;
 
 /**
@@ -20,8 +21,9 @@ import java.util.Optional;
 public abstract class CommandExecutor implements Command {
     private final String nextPage;
     private RequestParamExtractor paramExtractor = new RequestParamExtractor();
-    private static final int DEFAULT_QUANTITY_VALUE=3;
+    private static final int DEFAULT_QUANTITY_VALUE=5;
     private static final int DEFAULT_OFFSET_VALUE = 0;
+    private static final int DEFAULT_PAGE = 1;
 
     protected CommandExecutor(String nextPage) {
         this.nextPage = nextPage;
@@ -82,5 +84,23 @@ public abstract class CommandExecutor implements Command {
 
     protected int calculateOverallPagesCount(int limit, int totalCount){
         return (int)Math.ceil((totalCount+0.0)/limit);
+    }
+
+    protected int getNumberOfPageOrDefault(HttpServletRequest request) {
+        int numberOfPage;
+        if (request.getParameter(Attributes.OFFSET)!=null){
+            numberOfPage = Integer.parseInt(request.getParameter(Attributes.OFFSET));
+        }
+        else numberOfPage = DEFAULT_PAGE;
+        return numberOfPage;
+    }
+
+    protected LocalDate getLocalDateOrDefault(HttpServletRequest request, LocalDate defaultLocalDate) {
+        LocalDate dateToShow;
+        if (request.getParameter(Attributes.DATE_CHOOSEN_BY_USER)!=null){
+            dateToShow = LocalDate.parse(request.getParameter(Attributes.DATE_CHOOSEN_BY_USER));
+        }
+        else dateToShow = defaultLocalDate;
+        return dateToShow;
     }
 }

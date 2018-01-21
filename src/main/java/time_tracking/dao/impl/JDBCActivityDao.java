@@ -23,8 +23,12 @@ public class JDBCActivityDao implements ActivityDao {
     public static final String INSERT_ACTIVITY = "INSERT INTO `time_tracking_db`.`activityt` ( `name`, `startDate`, `endDate`, `status`, `usert_id`) VALUES (?,?,?,?,?);";
     public static final String SELECT_LAST_INSERT_ID = "select last_insert_id();";
 
-    public static final String GET_ACTIVITIES_WITHOUT_USER = "SELECT * FROM time_tracking_db.activityt ";
-    public static final String GET_ACTIVITIES_WITH_USER = "SELECT * FROM time_tracking_db.activityt join usert on activityt.usert_id = usert.id and usert_id = ?";
+    private enum Action{GET_ACTIVITIES, GET_COUNT};
+    public static final String GET_ACTIVITIES = "SELECT * ";
+    public static final String GET_COUNT_OF_ACTIVITIES = "SELECT count(*) ";
+    public static final String FROM_ACT_TABLE = "FROM time_tracking_db.activityt ";
+    //public static final String FROM_ACT_TABLE_WITHOUT_USER = "SELECT * FROM time_tracking_db.activityt ";
+    public static final String WITH_USER = " join usert on activityt.usert_id = usert.id and usert_id = ?";
     public static final String WITH_STATUS = " and status = ? ";
     public static final String WITH_WORK_IN_CURR_DAY = "and activityt.startDate<=date(?) and activityt.endDate>=date(?)";
 
@@ -77,41 +81,67 @@ public class JDBCActivityDao implements ActivityDao {
         return null;
     }
 
+    @Override
+    public long getCountOfActivities(StatusActivity status, Optional<LocalDate> date, Optional<User> user) {
+        long result = 0;
+
+        try {
+            String statement = getStatement(Action.GET_COUNT, date, user);
+            PreparedStatement preparedStatement = getPreparedStatement(status, date, user, statement);
+            preparedStatement.execute();
+
+            ResultSet set = preparedStatement.getResultSet();
+            if (set.isBeforeFirst()){
+                set.next();
+                result = set.getLong(1);
+            }
+        }
+        catch(SQLException ex){
+            throw new DaoException(ex.getMessage());
+        }
+
+        return result;
+    }
+
     /**
      * @param numberOfPortion - for pagination
      * @param sizeOfPortion - for pagination
      * @param status - aprroved / pending
      * @param date
-     * @param user
+     * @param user - need only ID, that's why can get empty User but with ID
      * @return portion of activities from some index
      * that will calculate how (numberOfPortion*(sizeOfPortion-1) + 1)
      */
     public List<Activity> findAll(long numberOfPortion, long sizeOfPortion, StatusActivity status, Optional<LocalDate> date, Optional<User> user){
         List<Activity> activities = new ArrayList<>();
         try {
-            String statement = getStatement(date, user);
+            String statement = getStatement(Action.GET_ACTIVITIES, date, user);
             PreparedStatement preparedStatement = getPreparedStatement(status, date, user, statement);
             preparedStatement.execute();
 
             ResultSet set = preparedStatement.getResultSet();
-            long startPosition = sizeOfPortion*numberOfPortion - sizeOfPortion+1;
-            long n = 0;
-            long count = 0;
-            ActivityMapper activityMapper = new ActivityMapper();
-
-            while (set.next()){
-                n++;
-                if (n>=startPosition && count<sizeOfPortion){
-                    count++;
-                    Activity activity = activityMapper.extractFromResultSet(set);
-                    activities.add(activity);
-                }
-            }
+            extractActivitiesFromSetToList(numberOfPortion, sizeOfPortion, activities, set);
         }
         catch(SQLException ex){
             throw new DaoException(ex.getMessage());
         }
         return activities;
+    }
+
+    private void extractActivitiesFromSetToList(long numberOfPortion, long sizeOfPortion, List<Activity> activities, ResultSet set) throws SQLException {
+        long startPosition = sizeOfPortion*numberOfPortion - sizeOfPortion+1;
+        long n = 0;
+        long count = 0;
+        ActivityMapper activityMapper = new ActivityMapper();
+
+        while (set.next()){
+            n++;
+            if (n>=startPosition && count<sizeOfPortion){
+                count++;
+                Activity activity = activityMapper.extractFromResultSet(set);
+                activities.add(activity);
+            }
+        }
     }
 
     private PreparedStatement getPreparedStatement(StatusActivity status, Optional<LocalDate> date, Optional<User> user, String statement) throws SQLException {
@@ -135,11 +165,15 @@ public class JDBCActivityDao implements ActivityDao {
         return preparedStatement;
     }
 
-    private String getStatement(Optional<LocalDate> date, Optional<User> user) {
+    private String getStatement(Action action, Optional<LocalDate> date, Optional<User> user) {
         String statement = "";
+        if (action == Action.GET_ACTIVITIES)
+            statement+=GET_ACTIVITIES;
+        else statement+=GET_COUNT_OF_ACTIVITIES;
 
-        if (user.isPresent()) statement+=GET_ACTIVITIES_WITH_USER;
-                else statement+=GET_ACTIVITIES_WITHOUT_USER;
+        statement+=FROM_ACT_TABLE;
+
+        if (user.isPresent()) statement+=WITH_USER;
         statement+=WITH_STATUS;
 
         if (date.isPresent()) statement+=WITH_WORK_IN_CURR_DAY;
