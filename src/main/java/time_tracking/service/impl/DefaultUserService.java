@@ -14,6 +14,7 @@ import java.util.Optional;
 public class DefaultUserService implements UserService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
+    //TODO як транзакцією це зробити?
     @Override
     public void addActivity(String name, LocalDate startDate, LocalDate endDate, long userId) {
         UserDao userDao = daoFactory.createUserDao();
@@ -39,8 +40,7 @@ public class DefaultUserService implements UserService {
 
             OrderDao orderDao = daoFactory.createOrderDao();
             orderDao.create(order);
-
-            ((JDBCDaoFactory)daoFactory).closeDangerConnection();
+            orderDao.close();
         }
     }
 

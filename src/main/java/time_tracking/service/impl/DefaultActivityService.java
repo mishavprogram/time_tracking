@@ -28,7 +28,8 @@ public class DefaultActivityService implements ActivityService {
     public long getCountOfActiveActivities(long userId, LocalDate localDate) {
         ActivityDao activityDao = daoFactory.createActivityDao();
         User user = new User.Builder().setId(userId).getInstance();
-        return activityDao.getCountOfActivities(StatusActivity.APPROVED, Optional.of(localDate), Optional.of(user));
+        long result = activityDao.getCountOfActivities(StatusActivity.APPROVED, Optional.of(localDate), Optional.of(user));
+        return result;
     }
 
     @Override
@@ -42,7 +43,9 @@ public class DefaultActivityService implements ActivityService {
     public long getCountOfPendingActivities(long userId, LocalDate localDate) {
         ActivityDao activityDao = daoFactory.createActivityDao();
         User user = new User.Builder().setId(userId).getInstance();
-        return activityDao.getCountOfActivities(StatusActivity.PENDING, Optional.of(localDate), Optional.of(user));
+        long result = activityDao.getCountOfActivities(StatusActivity.PENDING, Optional.of(localDate), Optional.of(user));
+        activityDao.close();
+        return result;
     }
 
     @Override
@@ -95,6 +98,7 @@ public class DefaultActivityService implements ActivityService {
         ActivityDao activityDao = daoFactory.createActivityDao();
         User user = new User.Builder().setId(userId).getInstance();
         activities = activityDao.findAll(numberOfPortion, sizeOfPortion, StatusActivity.PENDING, Optional.of(localDate), Optional.of(user));
+        activityDao.close();
         return activities;
     }
 }

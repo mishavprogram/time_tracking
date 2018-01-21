@@ -1,5 +1,6 @@
 package time_tracking.dao.impl;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import time_tracking.dao.*;
 import time_tracking.dao.exception.DaoException;
 
@@ -10,33 +11,24 @@ import java.sql.SQLException;
 
 public class JDBCDaoFactory extends DaoFactory {
 
-    private DataSource dataSource;//ConnectionPoolHolder.getDataSource();
+    private volatile DataSource dataSource = ConnectionPoolHolder.getDataSource();
 
     public JDBCDaoFactory(){
         System.out.println("JDBC Dao Factory created. Datasource = "+dataSource);
     }
-    private Connection dangerConnection = getDangerConnection();
 
-    private Connection getConnection() {
-        //try {
-        //  System.out.println("try to get connection. Thread : "+Thread.currentThread().getName());
-        //return dataSource.getConnection();
-        if (dangerConnection==null) dangerConnection = getDangerConnection();
-        return dangerConnection;
-        //} catch (SQLException e) {
-        //  System.out.println("Dao Exception. DataSource : "+dataSource +". Thread : "+Thread.currentThread().getName());
-        //throw new DaoException(e.getMessage());
-        //if (dangerConnection==null) dangerConnection = getDangerConnection();
-        //return dangerConnection;
-        //}
-    }
+    private synchronized Connection getConnection() {
+        try {
+         System.out.println("try to get connection. Thread : "+Thread.currentThread().getName());
 
-    public void closeDangerConnection(){
-        /*try {
-            dangerConnection.close();
+         System.out.println("ACTIVE connections : "+((BasicDataSource)dataSource).getNumActive());
+
+         Connection connection = dataSource.getConnection();
+        return connection;
         } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
+            System.out.println("Dao Exception. DataSource : " + dataSource + ". Thread : " + Thread.currentThread().getName());
+            throw new DaoException(e.getMessage());
+        }
     }
 
     @Override
@@ -59,19 +51,4 @@ public class JDBCDaoFactory extends DaoFactory {
         return new JDBCActivityLogDao(getConnection());
     }
 
-    private Connection getDangerConnection(){
-        try {
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            return DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/time_tracking_db",
-                    "root" ,
-                    "1111" );
-        } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
-        }
-    }
 }

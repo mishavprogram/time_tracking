@@ -34,6 +34,8 @@ public class CommandHolder {
 
     //TODO
     private void fillCommands(){
+        commands.put("GET:/home", new HomeCommand());
+
         commands.put("GET:/login", new LoginCommand());
         commands.put("POST:/login", new LoginSubmitCommand());
 

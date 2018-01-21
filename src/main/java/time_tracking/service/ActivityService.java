@@ -20,6 +20,4 @@ public interface ActivityService {
     List<Activity> getPendingActivities(long numberOfPortion, long sizeOfPortion);
     List<Activity> getPendingActivities(long numberOfPortion, long sizeOfPortion, long userId);
     List<Activity> getPendingActivities(long numberOfPortion, long sizeOfPortion, long userId, LocalDate localDate);
-
-
 }

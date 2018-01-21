@@ -20,6 +20,8 @@ public class DefaultGeneralUser implements GeneralUserService {
         UserDao userDao = daoFactory.createUserDao();
         Optional<User> user = userDao.getUserByEmail(email);
 
+        userDao.close();
+
         if (user.isPresent()){
             if (user.get().getPasswordHash().equals(password)){
                 return user;

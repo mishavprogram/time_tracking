@@ -2,6 +2,7 @@ package time_tracking.controller.commands.user;
 
 import time_tracking.controller.commands.CommandExecutor;
 import time_tracking.service.UserService;
+import time_tracking.service.impl.DefaultActivityService;
 import time_tracking.service.impl.DefaultUserService;
 import time_tracking.utils.constants.PagesPath;
 
