@@ -7,18 +7,20 @@ public class OrderInfoForAdmin {
     private String userSurname;
     private String activityName;
     private String action;
+    private long activityId;
 
     public OrderInfoForAdmin(){
 
     }
 
-    public OrderInfoForAdmin(long id, String userEmail, String userName, String userSurname, String activityName, String action) {
+    public OrderInfoForAdmin(long id, String userEmail, String userName, String userSurname, String activityName, String action, long activityId) {
         this.id = id;
         this.userEmail = userEmail;
         this.userName = userName;
         this.userSurname = userSurname;
         this.activityName = activityName;
         this.action = action;
+        this.activityId = activityId;
     }
 
     public long getId() {
@@ -67,5 +69,13 @@ public class OrderInfoForAdmin {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public long getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(long activityId) {
+        this.activityId = activityId;
     }
 }

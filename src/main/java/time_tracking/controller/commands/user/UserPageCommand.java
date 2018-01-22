@@ -27,12 +27,12 @@ public class UserPageCommand extends CommandExecutor {
     public String performExecute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int maxCountOfElemOnPage = getLimitValueOrDefault(request);
         LocalDate dateToShow = getLocalDateOrDefault(request, LocalDate.now());
-        long userId = (long)(request.getSession().getAttribute(Attributes.USER_ID));
-        long totalCount = activityService.getCountOfPendingActivities(userId, dateToShow);
-        int totalPages = calculateOverallPagesCount(maxCountOfElemOnPage, (int)totalCount);//danger
+        long userId = (long) (request.getSession().getAttribute(Attributes.USER_ID));
+        long totalCount = activityService.getCountOfActiveActivities(userId, dateToShow);
+        int totalPages = calculateOverallPagesCount(maxCountOfElemOnPage, (int) totalCount);
         int numberOfPage = getNumberOfPageOrDefault(request);
 
-        List<Activity> activities = activityService.getPendingActivities(numberOfPage, maxCountOfElemOnPage, userId, dateToShow);
+        List<Activity> activities = activityService.getActiveActivities(numberOfPage, maxCountOfElemOnPage, userId, dateToShow);
         request.setAttribute(Attributes.ACTIVITIES, activities);
         request.setAttribute(Attributes.TOTAL_PAGES, totalPages);
         return PagesPath.USER_HOME_PAGE;

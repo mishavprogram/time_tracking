@@ -5,6 +5,7 @@ import time_tracking.dao.OrderDao;
 import time_tracking.dao.exception.DaoException;
 import time_tracking.dao.mapper.impl.OrderMapper;
 import time_tracking.model.entity.Order;
+import time_tracking.model.entity.StatusOrder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,6 +29,8 @@ public class JDBCOrderDao implements OrderDao {
             "join activityt on (activityt_id = activityt.id) \n" +
             "join usert on (activityt.usert_id = usert.id)\n" +
             "where ordert.status='pending' and activityt.usert_id=? ";
+    static final String CHANGE_STATUS = "UPDATE `time_tracking_db`.`ordert` SET `status`=? WHERE `id`=?;";
+    static final String FIND_ORDER_BY_ID = "SELECT * FROM ordert join activityt on (activityt_id = activityt.id) join usert on (activityt.usert_id = usert.id) where ordert.id = ?";
     static final int ALL_USERS_ID = -1;
     private Connection connection;
 
@@ -51,8 +54,41 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
+    public void setOrderStatus(StatusOrder order, long orderId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(CHANGE_STATUS);
+            preparedStatement.setString(1,order.getStatusName());
+            preparedStatement.setLong(2,orderId);
+
+            preparedStatement.execute();
+        }
+        catch(SQLException ex){
+            throw new DaoException(ex.getMessage());
+        }
+    }
+
+    @Override
     public Optional<Order> findById(long id) {
-        return null;
+        Optional<Order> order = Optional.empty();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_ORDER_BY_ID);
+            preparedStatement.setLong(1,id);
+            preparedStatement.execute();
+
+            ResultSet set = preparedStatement.getResultSet();
+
+            if (set.isBeforeFirst()){
+                set.next();
+
+                OrderMapper orderMapper = new OrderMapper();
+                order = Optional.of(orderMapper.extractFromResultSet(set));
+            }
+
+        }
+        catch(SQLException ex){
+            throw new DaoException(ex.getMessage());
+        }
+        return order;
     }
 
     @Override
@@ -72,7 +108,11 @@ public class JDBCOrderDao implements OrderDao {
 
     @Override
     public void close() {
-
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

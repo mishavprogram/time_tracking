@@ -31,4 +31,18 @@ public final class Attributes {
     public static final String BUNDLE_FILE = "bundleFile";
     public static final String ACTIVITIES = "activities";
     public static final String ORDERS = "orders";
+
+    public static final String ACTIVITY_USER_EMAIL = "activity_user_email";
+    public static final String ACTIVITY_NAME = "activity_name";
+    public static final String ACTIVITY_START_DATE = "activity_startDate";
+    public static final String ACTIVITY_END_DATE = "activity_endDate";
+    public static final String ACTIVITY_ACTION = "activity_action";
+    public static final String ACTIVITY_ID = "activity_id";
+
+    public static final String CONFIRM = "confirm";
+    public static final String REJECT = "reject";
+
+    public static final String CURRENT_ORDER_ID = "current_orderId";
+    public static final String CURRENT_ACTIVITY_ID = "current_activityId";
+    public static final String ORDER_ID = "order_id";
 }

@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public class LoginSubmitCommand extends CommandExecutor {
     private static final String PARAM_EMAIL = "login_email";
-    private static final String PARAM_PASSWORD ="login_password";
+    private static final String PARAM_PASSWORD = "login_password";
 
     private GeneralUserService userService = new DefaultGeneralUser();
 
@@ -26,13 +26,13 @@ public class LoginSubmitCommand extends CommandExecutor {
 
     @Override
     public String performExecute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("Perform execute in LoginSubmitCommand."+". Thread : "+Thread.currentThread().getName());
+        System.out.println("Perform execute in LoginSubmitCommand." + ". Thread : " + Thread.currentThread().getName());
         saveLoginDataToRequest(request);
         String pageToGo = PagesPath.LOGIN;
         String email = request.getParameter(PARAM_EMAIL);
         String password = request.getParameter(PARAM_PASSWORD);
         Optional<User> user = userService.login(email, password);
-        if( user.isPresent()){
+        if (user.isPresent()) {
             User person = user.get();
             pageToGo = getResultPageByUserRole(person);
             request.getSession().setAttribute(Attributes.USER_ID, person.getId());
@@ -45,20 +45,20 @@ public class LoginSubmitCommand extends CommandExecutor {
         return pageToGo;
     }
 
-    private String getResultPageByUserRole(User user){
+    private String getResultPageByUserRole(User user) {
         String result = PagesPath.USER_HOME;
-        if(user.getRole()== RoleType.ADMIN) {
+        if (user.getRole() == RoleType.ADMIN) {
             result = PagesPath.ADMIN_HOME;
         }
         return result;
     }
 
-    private void saveLoginDataToRequest(HttpServletRequest request){
+    private void saveLoginDataToRequest(HttpServletRequest request) {
         request.setAttribute(Attributes.PREVIOUS_LOGIN_EMAIL, request.getParameter(PARAM_EMAIL));
         request.setAttribute(Attributes.PREVIOUS_LOGIN_PASSWORD, request.getParameter(PARAM_PASSWORD));
     }
 
-    private void clearLoginDataFromRequest(HttpServletRequest request){
+    private void clearLoginDataFromRequest(HttpServletRequest request) {
         request.removeAttribute(Attributes.PREVIOUS_LOGIN_EMAIL);
         request.removeAttribute(Attributes.PREVIOUS_LOGIN_PASSWORD);
     }

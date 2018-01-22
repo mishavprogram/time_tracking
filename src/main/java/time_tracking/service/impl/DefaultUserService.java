@@ -44,6 +44,7 @@ public class DefaultUserService implements UserService {
         }
     }
 
+    //TODO по аналогії ж з додаванням
     @Override
     public void deleteActivity(long id) {
 

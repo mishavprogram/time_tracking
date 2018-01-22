@@ -5,9 +5,11 @@ import time_tracking.model.entity.User;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface ActivityService {
     void setDayTimeForActivity(Activity activity, LocalDate localDate, int hours);
+    Optional<Activity> getActivity(long activityId);
 
     long getCountOfActiveActivities(long userId, LocalDate localDate);
     long getCountOfPendingActivities(long userId);

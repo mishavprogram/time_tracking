@@ -28,12 +28,6 @@ public class FrontController extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Front doGet"+". Thread : "+Thread.currentThread().getName()+" .Session ="+request.getSession().toString());
-        int n = countOfEnter.incrementAndGet();
-        System.out.println("countOfEnter : "+countOfEnter+". Thread : "+Thread.currentThread().getName()+"\n\n");
-        if (n>3){
-            System.out.println("Ми на місці для дебагу"+". Thread : "+Thread.currentThread().getName());
-        }
-
 
         String path = processRequest(request, response);
         if(!path.equals(PagesPath.REDIRECT)) {

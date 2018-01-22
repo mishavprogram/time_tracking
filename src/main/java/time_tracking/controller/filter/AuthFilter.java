@@ -62,7 +62,7 @@ public class AuthFilter implements Filter{
 
     private static class UserAuthorizer implements Authorizer {
         public boolean check(String uri, Object userId) {
-            return userId!=null && !uri.startsWith(PagesPath.ADMIN_HOME);
+            return userId!=null && !uri.startsWith(PagesPath.ADMIN_HOME) && !uri.startsWith(PagesPath.MAKE_DECISION);
 
         }
     }
@@ -71,7 +71,8 @@ public class AuthFilter implements Filter{
         public boolean check(String uri, Object userId) {
             return  userId!=null && (uri.startsWith(PagesPath.ADMIN_HOME)||
                     uri.startsWith(PagesPath.LOGIN)||
-                    uri.startsWith(PagesPath.REGISTER));
+                    uri.startsWith(PagesPath.REGISTER) ||
+                    uri.startsWith(PagesPath.MAKE_DECISION));
         }
     }
 

@@ -20,6 +20,17 @@ public class DefaultActivityService implements ActivityService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
     @Override
+    public Optional<Activity> getActivity(long activityId) {
+        Optional<Activity> activity = Optional.empty();
+
+        ActivityDao activityDao = daoFactory.createActivityDao();
+        activity = activityDao.findById(activityId);
+
+        activityDao.close();
+        return activity;
+    }
+
+    @Override
     public void setDayTimeForActivity(Activity activity, LocalDate localDate, int hours) {
 
     }
@@ -29,6 +40,7 @@ public class DefaultActivityService implements ActivityService {
         ActivityDao activityDao = daoFactory.createActivityDao();
         User user = new User.Builder().setId(userId).getInstance();
         long result = activityDao.getCountOfActivities(StatusActivity.APPROVED, Optional.of(localDate), Optional.of(user));
+        activityDao.close();
         return result;
     }
 
@@ -71,6 +83,7 @@ public class DefaultActivityService implements ActivityService {
         ActivityDao activityDao = daoFactory.createActivityDao();
         User user = new User.Builder().setId(userId).getInstance();
         activities = activityDao.findAll(numberOfPortion, sizeOfPortion, StatusActivity.APPROVED, Optional.of(localDate), Optional.of(user));
+        activityDao.close();
         return activities;
     }
 

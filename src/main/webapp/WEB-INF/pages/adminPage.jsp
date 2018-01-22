@@ -52,7 +52,7 @@
                             <td>${order.userSurname}</td>
                             <td>${order.activityName}</td>
                             <td>${order.action}</td>
-                            <td><form method="get"><button class="btn-primary">confirm or reject</button></form></td>
+                            <td><a href="/adminPage/${order.id}"><button class="btn-primary">confirm or reject</button></a></td>
                         </tr>
                     </c:forEach>
                 </table>

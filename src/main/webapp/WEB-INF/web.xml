@@ -11,10 +11,12 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>MainController</servlet-name>
+    <url-pattern>/home</url-pattern>
     <url-pattern>/login</url-pattern>
     <url-pattern>/logout</url-pattern>
     <url-pattern>/userPage</url-pattern>
-    <url-pattern>/adminPage</url-pattern>
+    <url-pattern>/adminPage/*</url-pattern>
+    <url-pattern>/makeDecision</url-pattern>
     <url-pattern>/addingActivity</url-pattern>
   </servlet-mapping>
 

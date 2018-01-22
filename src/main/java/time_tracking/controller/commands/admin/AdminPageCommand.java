@@ -26,7 +26,7 @@ public class AdminPageCommand extends CommandExecutor {
     public String performExecute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int maxCountOfElemOnPage = getLimitValueOrDefault(request);
         long totalCount = adminService.getCountOfPendingOrders();
-        int totalPages = calculateOverallPagesCount(maxCountOfElemOnPage, (int)totalCount);//danger
+        int totalPages = calculateOverallPagesCount(maxCountOfElemOnPage, (int) totalCount);//danger
         int numberOfPage = getNumberOfPageOrDefault(request);
 
         List<OrderInfoForAdmin> orders = adminService.getPendingOrders(numberOfPage, maxCountOfElemOnPage);

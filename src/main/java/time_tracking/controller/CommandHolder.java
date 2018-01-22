@@ -43,6 +43,7 @@ public class CommandHolder {
 
         commands.put("GET:/userPage", new UserPageCommand());
         commands.put("GET:/adminPage", new AdminPageCommand());
+        commands.put("GET:/adminPage/id", new MakeDecisionCommand());
 
         commands.put("GET:/addingActivity", new AddActivityCommand());
         commands.put("POST:/addingActivity", new AddActivitySubmitCommand());

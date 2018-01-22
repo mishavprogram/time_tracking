@@ -3,7 +3,7 @@ package time_tracking.model.entity;
 import com.sun.istack.internal.Nullable;
 
 public enum StatusOrder {
-    DELETED("deleted"),
+    APPROVED("approved"),
     REJECTED("rejected"),
     PENDING("pending");
 

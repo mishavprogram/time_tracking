@@ -21,7 +21,7 @@ public class AddActivitySubmitCommand extends CommandExecutor {
 
     @Override
     public String performExecute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Perform execute in AddActivitySubmitCommand."+". Thread : "+Thread.currentThread().getName());
+        System.out.println("Perform execute in AddActivitySubmitCommand." + ". Thread : " + Thread.currentThread().getName());
         String pageToGo = PagesPath.ADDING_ACTIVITY;
 
         Long userId = Long.parseLong(request.getParameter("userId"));

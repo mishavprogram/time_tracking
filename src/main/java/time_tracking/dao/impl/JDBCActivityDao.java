@@ -30,7 +30,12 @@ public class JDBCActivityDao implements ActivityDao {
     //public static final String FROM_ACT_TABLE_WITHOUT_USER = "SELECT * FROM time_tracking_db.activityt ";
     public static final String WITH_USER = " join usert on activityt.usert_id = usert.id and usert_id = ?";
     public static final String WITH_STATUS = " and status = ? ";
+    public static final String WITH_ID = " and activityt.id = ? ";
     public static final String WITH_WORK_IN_CURR_DAY = "and activityt.startDate<=date(?) and activityt.endDate>=date(?)";
+
+    public static final String GET_ACT_BY_ID = "SELECT * FROM activityt left join usert on activityt.usert_id=usert.id and activityt.id = ?";
+
+    public static final String CHANGE_ACTIVITY_STATUS = "UPDATE `time_tracking_db`.`activityt` SET `status`=? WHERE `id`=?;";
 
     private Connection connection;
 
@@ -73,7 +78,27 @@ public class JDBCActivityDao implements ActivityDao {
 
     @Override
     public Optional<Activity> findById(long id) {
-        return null;
+        Optional<Activity> activity = Optional.empty();
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_ACT_BY_ID);
+
+            preparedStatement.setLong(1,id);
+            preparedStatement.execute();
+
+            ResultSet resultSet = preparedStatement.getResultSet();
+
+            if (resultSet.isBeforeFirst()) {
+                resultSet.next();
+                ActivityMapper activityMapper = new ActivityMapper();
+                Activity temp = activityMapper.extractFromResultSet(resultSet);
+                activity = Optional.of(temp);
+            }
+        }
+        catch(Exception ex){
+            throw new DaoException(ex.getMessage());
+        }
+        return activity;
     }
 
     @Override
@@ -202,6 +227,21 @@ public class JDBCActivityDao implements ActivityDao {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void setActivityStatus(StatusActivity status, long activityId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(CHANGE_ACTIVITY_STATUS);
+            preparedStatement.setString(1, status.getStatusName());
+            preparedStatement.setLong(2,activityId);
+
+            preparedStatement.execute();
+        }
+        catch(SQLException ex){
+            throw new DaoException(ex.getMessage());
+        }
+    }
+
 
     public static void main(String[] args) {
         DaoFactory daoFactory = DaoFactory.getInstance();
