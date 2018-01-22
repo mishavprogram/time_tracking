@@ -20,15 +20,16 @@ public class LocaleFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = ((HttpServletRequest) request);
         HttpSession session = req.getSession();
+        req.setCharacterEncoding("UTF-8");
         setResourceBundle(session);
         Locale locale = localeHolder.getCurrentLocale();
         String localeName = extractLocale(req);
-        if(localeName != null) {
+        if (localeName != null) {
             locale = findSupportedLocale(localeName);
         }
         req.setAttribute(Attributes.LOCALE, locale);
         session.setAttribute(Attributes.LOCALE, locale);
-        session.setAttribute("SUPPORTED_LOCALES",LocaleHolder.SUPPORTED_LOCALES);
+        session.setAttribute("SUPPORTED_LOCALES", LocaleHolder.SUPPORTED_LOCALES);
         chain.doFilter(request, response);
     }
 
@@ -42,7 +43,7 @@ public class LocaleFilter implements Filter {
 
     }
 
-    private String extractLocale(HttpServletRequest request){
+    private String extractLocale(HttpServletRequest request) {
         return request.getParameter(Attributes.LANG);
     }
 
@@ -56,8 +57,8 @@ public class LocaleFilter implements Filter {
         return LocaleHolder.DEFAULT_LOCALE;
     }
 
-    private void setResourceBundle(HttpSession session){
-        if(session.getAttribute(Attributes.BUNDLE_FILE)==null){
+    private void setResourceBundle(HttpSession session) {
+        if (session.getAttribute(Attributes.BUNDLE_FILE) == null) {
             session.setAttribute(Attributes.BUNDLE_FILE, MESSAGE_PATH);
         }
     }

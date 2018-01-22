@@ -24,16 +24,17 @@ public class CommandHolder {
 
     /**
      * method which convert url and find necessary command
+     *
      * @param key
      * @return command
      */
-    Command findCommand(String key){
+    Command findCommand(String key) {
         String convertedKey = removeAllNumbersFromUrl(key);
         return commands.getOrDefault(convertedKey, new PageNotFoundCommand());
     }
 
     //TODO
-    private void fillCommands(){
+    private void fillCommands() {
         commands.put("GET:/home", new HomeCommand());
 
         commands.put("GET:/login", new LoginCommand());
@@ -55,14 +56,14 @@ public class CommandHolder {
         commands.put("POST:/makeDecision", new MakeDecisionSubmitCommand());
     }
 
-    //TODO розібратись чому цей метод треба
     /**
      * this method replaces all digits between slashes to "id"
      * this is necessary because search algorithm doesn't support regular expressions
+     *
      * @param url
      * @return converted url
      */
-    private String removeAllNumbersFromUrl(String url){
+    private String removeAllNumbersFromUrl(String url) {
         return url.replaceAll(NUMBER_BETWEEN_SLASHES_PATTERN, "/id");
     }
 }

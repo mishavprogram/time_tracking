@@ -14,7 +14,8 @@ public interface Command {
 
     /**
      * this method perform some logic on user requests
-     * @param request request from client
+     *
+     * @param request  request from client
      * @param response response to client
      * @return
      * @throws ServletException

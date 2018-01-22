@@ -14,13 +14,12 @@ import java.util.Optional;
 public class DefaultUserService implements UserService {
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
-    //TODO як транзакцією це зробити?
     @Override
     public void addActivity(String name, LocalDate startDate, LocalDate endDate, long userId) {
         UserDao userDao = daoFactory.createUserDao();
         Optional<User> user = userDao.findById(userId);
 
-        if (user.isPresent()){
+        if (user.isPresent()) {
             Activity activity = new Activity.Builder()
                     .setName(name)
                     .setStatus(StatusActivity.PENDING)
@@ -44,7 +43,6 @@ public class DefaultUserService implements UserService {
         }
     }
 
-    //TODO по аналогії ж з додаванням
     @Override
     public void deleteActivity(long id) {
 
@@ -54,7 +52,7 @@ public class DefaultUserService implements UserService {
     public Optional<User> getUserByEmail(String email) {
         UserDao userDao = daoFactory.createUserDao();
         Optional<User> user = userDao.getUserByEmail(email);
-        if (user.get().equals(new User.Builder().getInstance())){
+        if (user.isPresent() && user.get().equals(new User.Builder().getInstance())) {
             return Optional.empty();
         }
         return user;

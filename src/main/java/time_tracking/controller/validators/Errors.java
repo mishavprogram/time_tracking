@@ -14,15 +14,15 @@ public class Errors {
         errors = new HashMap<>();
     }
 
-    public void addError(String attribute, String messageKey){
+    public void addError(String attribute, String messageKey) {
         errors.put(attribute, messageKey);
     }
 
-    public void addErrors(Map<String, String> errors){
+    public void addErrors(Map<String, String> errors) {
         this.errors.putAll(errors);
     }
 
-    public boolean hasErrors(){
+    public boolean hasErrors() {
         return !errors.isEmpty();
     }
 

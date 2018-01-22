@@ -4,7 +4,6 @@ import time_tracking.controller.commands.CommandExecutor;
 import time_tracking.model.entity.RoleType;
 import time_tracking.model.entity.User;
 import time_tracking.service.GeneralUserService;
-import time_tracking.service.impl.DefaultAdminService;
 import time_tracking.service.impl.DefaultGeneralUser;
 import time_tracking.utils.constants.Attributes;
 import time_tracking.utils.constants.PagesPath;
@@ -26,7 +25,6 @@ public class LoginSubmitCommand extends CommandExecutor {
 
     @Override
     public String performExecute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("Perform execute in LoginSubmitCommand." + ". Thread : " + Thread.currentThread().getName());
         saveLoginDataToRequest(request);
         String pageToGo = PagesPath.LOGIN;
         String email = request.getParameter(PARAM_EMAIL);

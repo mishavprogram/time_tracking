@@ -3,7 +3,7 @@ package time_tracking.exception;
 /**
  * this class represents custom application exception
  */
-public class ApplicationException extends RuntimeException{
+public class ApplicationException extends RuntimeException {
     /**
      * bundle key to error text message
      */

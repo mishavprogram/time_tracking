@@ -14,13 +14,13 @@ public enum StatusOrder {
     }
 
     @Nullable
-    public String getStatusName(){
+    public String getStatusName() {
         return orderName;
     }
 
     @Nullable
-    public static StatusOrder getStatusOrder(String statusName){
-        for(StatusOrder statusOrder:values()) {
+    public static StatusOrder getStatusOrder(String statusName) {
+        for (StatusOrder statusOrder : values()) {
             if (statusOrder.getStatusName().equals(statusName))
                 return statusOrder;
         }

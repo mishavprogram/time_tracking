@@ -21,7 +21,7 @@ import java.util.Optional;
 public abstract class CommandExecutor implements Command {
     private final String nextPage;
     private RequestParamExtractor paramExtractor = new RequestParamExtractor();
-    private static final int DEFAULT_QUANTITY_VALUE=5;
+    private static final int DEFAULT_QUANTITY_VALUE = 5;
     private static final int DEFAULT_OFFSET_VALUE = 0;
     private static final int DEFAULT_PAGE = 1;
 
@@ -31,7 +31,8 @@ public abstract class CommandExecutor implements Command {
 
     /**
      * main method which wrap all actions, which could throw some exception
-     * @param request request from client
+     *
+     * @param request  request from client
      * @param response response to client
      * @return
      * @throws ServletException
@@ -39,29 +40,25 @@ public abstract class CommandExecutor implements Command {
      */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("CommandExecutor execute."+". Thread : "+Thread.currentThread().getName());
         try {
             return performExecute(request, response);
-        }
-        catch (ServiceException exception){
+        } catch (ServiceException exception) {
             putErrorMessageInRequest(request, exception.getMessageKey());
             request.getRequestDispatcher(nextPage).forward(request, response);
-        }
-        catch (ApplicationException exception){
+        } catch (ApplicationException exception) {
             putErrorMessageInRequest(request, exception.getMessageKey());
-            request.getRequestDispatcher(PagesPath.ERROR_PAGE).forward(request,response);
-        }
-        catch (Exception exception){
+            request.getRequestDispatcher(PagesPath.ERROR_PAGE).forward(request, response);
+        } catch (Exception exception) {
             putErrorMessageInRequest(request, MessageKeys.UNKNOWN_ERROR_OCCURED);
-            request.getRequestDispatcher(PagesPath.ERROR_PAGE).forward(request,response);
+            request.getRequestDispatcher(PagesPath.ERROR_PAGE).forward(request, response);
 
         }
         return PagesPath.FORWARD;
     }
 
-    public void putErrorMessageInRequest(HttpServletRequest request, String messageKey){
+    public void putErrorMessageInRequest(HttpServletRequest request, String messageKey) {
         Errors errors = (Errors) request.getAttribute(Attributes.ERRORS);
-        if(errors==null){
+        if (errors == null) {
             errors = new Errors();
         }
         errors.addError(Attributes.ERROR, messageKey);
@@ -71,36 +68,34 @@ public abstract class CommandExecutor implements Command {
     public abstract String performExecute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException;
 
-    protected int getLimitValueOrDefault(HttpServletRequest request){
+    protected int getLimitValueOrDefault(HttpServletRequest request) {
         return Optional.ofNullable(paramExtractor.extractPaginParam(request, Attributes.LIMIT))
                 .orElse(DEFAULT_QUANTITY_VALUE);
     }
 
-    protected int getOffsetValueOrDefault(HttpServletRequest request, int quantity){
+    protected int getOffsetValueOrDefault(HttpServletRequest request, int quantity) {
         return Optional.ofNullable(paramExtractor.extractPaginParam(request, Attributes.OFFSET))
-                .map(page->(page-1)*quantity)
+                .map(page -> (page - 1) * quantity)
                 .orElse(DEFAULT_OFFSET_VALUE);
     }
 
-    protected int calculateOverallPagesCount(int limit, int totalCount){
-        return (int)Math.ceil((totalCount+0.0)/limit);
+    protected int calculateOverallPagesCount(int limit, int totalCount) {
+        return (int) Math.ceil((totalCount + 0.0) / limit);
     }
 
     protected int getNumberOfPageOrDefault(HttpServletRequest request) {
         int numberOfPage;
-        if (request.getParameter(Attributes.OFFSET)!=null){
+        if (request.getParameter(Attributes.OFFSET) != null) {
             numberOfPage = Integer.parseInt(request.getParameter(Attributes.OFFSET));
-        }
-        else numberOfPage = DEFAULT_PAGE;
+        } else numberOfPage = DEFAULT_PAGE;
         return numberOfPage;
     }
 
     protected LocalDate getLocalDateOrDefault(HttpServletRequest request, LocalDate defaultLocalDate) {
         LocalDate dateToShow;
-        if (request.getParameter(Attributes.DATE_CHOOSEN_BY_USER)!=null){
+        if (request.getParameter(Attributes.DATE_CHOOSEN_BY_USER) != null) {
             dateToShow = LocalDate.parse(request.getParameter(Attributes.DATE_CHOOSEN_BY_USER));
-        }
-        else dateToShow = defaultLocalDate;
+        } else dateToShow = defaultLocalDate;
         return dateToShow;
     }
 }

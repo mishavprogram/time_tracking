@@ -17,7 +17,7 @@ public class DefaultAdminService implements AdminService {
 
     @Override
     public long getCountOfPendingOrders() {
-        long count = 0;
+        long count;
         OrderDao orderDao = daoFactory.createOrderDao();
         count = orderDao.getCountOfPendingOrders();
         orderDao.close();
@@ -31,7 +31,7 @@ public class DefaultAdminService implements AdminService {
 
         OrderDao orderDao = daoFactory.createOrderDao();
         Optional<Order> order = orderDao.findById(orderId);
-        if (order.isPresent()){
+        if (order.isPresent()) {
             result = order.get().getAction().getActionName();
         }
         orderDao.close();
@@ -69,17 +69,18 @@ public class DefaultAdminService implements AdminService {
         OrderDao orderDao = daoFactory.createOrderDao();
         Optional<Order> order = orderDao.findById(orderId);
 
-        ActivityDao activityDao = daoFactory.createActivityDao();
+        if (order.isPresent()) {
+            ActivityDao activityDao = daoFactory.createActivityDao();
 
-        if (order.get().getAction().equals(Action.ADD))
-            activityDao.setActivityStatus(StatusActivity.APPROVED, activityId);
-        else {
-            activityDao.setActivityStatus(StatusActivity.DELETED, activityId);
+            if (order.get().getAction().equals(Action.ADD))
+                activityDao.setActivityStatus(StatusActivity.APPROVED, activityId);
+            else {
+                activityDao.setActivityStatus(StatusActivity.DELETED, activityId);
+            }
+
+            activityDao.close();
+            orderDao.setOrderStatus(StatusOrder.APPROVED, orderId);
         }
-
-        activityDao.close();
-        orderDao.setOrderStatus(StatusOrder.APPROVED, orderId);
-
         orderDao.close();
     }
 
@@ -87,6 +88,17 @@ public class DefaultAdminService implements AdminService {
     public void rejectOrder(long orderId) {
         OrderDao orderDao = daoFactory.createOrderDao();
         orderDao.setOrderStatus(StatusOrder.REJECTED, orderId);
+
+        Optional<Order> order = orderDao.findById(orderId);
+        if (order.isPresent()) {
+            ActivityDao activityDao = daoFactory.createActivityDao();
+
+            if (order.get().getAction().equals(Action.ADD))
+                activityDao.setActivityStatus(StatusActivity.DELETED, order.get().getActivity().getId());
+
+            activityDao.close();
+        }
+
         orderDao.close();
     }
 

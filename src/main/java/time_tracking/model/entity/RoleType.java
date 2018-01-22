@@ -10,12 +10,12 @@ public enum RoleType {
         this.roleName = roleName;
     }
 
-    public String getRoleName(){
+    public String getRoleName() {
         return roleName;
     }
 
-    public static RoleType getRole(String roleName){
-        for(RoleType roleType:values()) {
+    public static RoleType getRole(String roleName) {
+        for (RoleType roleType : values()) {
             if (roleType.getRoleName().equals(roleName))
                 return roleType;
         }

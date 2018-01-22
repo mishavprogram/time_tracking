@@ -10,12 +10,12 @@ public enum Action {
         this.actionName = roleName;
     }
 
-    public String getActionName(){
+    public String getActionName() {
         return actionName;
     }
 
-    public static Action getAction(String roleName){
-        for(Action roleType:values()) {
+    public static Action getAction(String roleName) {
+        for (Action roleType : values()) {
             if (roleType.getActionName().equals(roleName))
                 return roleType;
         }

@@ -7,8 +7,8 @@ import javax.sql.DataSource;
 public class ConnectionPoolHolder {
     private static volatile DataSource dataSource;
 
-    public static DataSource getDataSource(){
-        if (dataSource == null){
+    public static DataSource getDataSource() {
+        if (dataSource == null) {
             synchronized (ConnectionPoolHolder.class) {
                 if (dataSource == null) {
                     BasicDataSource ds = new BasicDataSource();
@@ -18,13 +18,9 @@ public class ConnectionPoolHolder {
                     ds.setPassword("1111");
                     ds.setMinIdle(5);
                     ds.setMaxIdle(20);
-                    //ds.setRemoveAbandonedTimeout(1);
-                    //ds.setTestWhileIdle(true);
-                    //ds.setTimeBetweenEvictionRunsMillis(3);
                     ds.setMaxActive(20);
                     ds.setMaxOpenPreparedStatements(100);
                     dataSource = ds;
-                    System.out.println("datasource created. Datasource = "+dataSource+". Thread : "+Thread.currentThread().getName());
                 }
             }
         }

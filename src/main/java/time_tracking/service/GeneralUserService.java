@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface GeneralUserService {
     Optional<User> login(String email, String password);
+
     void create(User user);
+
     List<User> findAll();
 }

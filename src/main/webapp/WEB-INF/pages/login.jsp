@@ -31,6 +31,7 @@
             </div>
             <input type="submit" value="<fmt:message key="enter" bundle="${msg}"/>">
         </form>
+
         <div class="dropdown choose-country">
             <c:forEach items="${SUPPORTED_LOCALES}" var="value">
                 <c:if test="${value eq sessionScope['locale']}">

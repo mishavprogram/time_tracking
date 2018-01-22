@@ -10,7 +10,7 @@ import java.util.Optional;
 public class JDBCActivityLogDao implements ActivityLogDao {
     private Connection connection;
 
-    public JDBCActivityLogDao(Connection connection) {
+    JDBCActivityLogDao(Connection connection) {
         this.connection = connection;
     }
 

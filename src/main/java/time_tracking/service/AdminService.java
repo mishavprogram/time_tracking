@@ -7,9 +7,14 @@ import java.util.List;
 
 public interface AdminService {
     long getActivityIdByOrder(long orderId);
+
     String getActionNameOfOrderByOrderId(long orderId);
+
     void confirmOrder(long orderId, long activityId);
+
     void rejectOrder(long orderId);
+
     List<OrderInfoForAdmin> getPendingOrders(long numberOfPortion, long sizeOfPortion);
+
     long getCountOfPendingOrders();
 }

@@ -22,15 +22,13 @@ public class DefaultGeneralUser implements GeneralUserService {
 
         userDao.close();
 
-        if (user.isPresent()){
-            if (user.get().getPasswordHash().equals(password)){
+        if (user.isPresent()) {
+            if (user.get().getPasswordHash().equals(password)) {
                 return user;
-            }
-            else {
+            } else {
                 throw new ServiceException(MessageKeys.WRONG_USER_PASSWORD);
             }
-        }
-        else
+        } else
             return Optional.empty();
     }
 

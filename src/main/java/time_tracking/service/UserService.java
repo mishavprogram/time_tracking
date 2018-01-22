@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface UserService {
     void addActivity(String name, LocalDate startDate, LocalDate endDate, long userId);
+
     void deleteActivity(long id);
+
     Optional<User> getUserByEmail(String email);
 }

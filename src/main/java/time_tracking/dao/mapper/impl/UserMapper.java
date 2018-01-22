@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class UserMapper implements ObjectMapper<User> {
     @Override
-    public  User extractFromResultSet(ResultSet rs) throws SQLException {
+    public User extractFromResultSet(ResultSet rs) throws SQLException {
         User user = new User.Builder()
                 .setId(rs.getLong("id"))
                 .setName(rs.getString("name"))

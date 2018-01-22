@@ -1,8 +1,6 @@
 package time_tracking.controller.commands.user;
 
-import time_tracking.controller.commands.Command;
 import time_tracking.controller.commands.CommandExecutor;
-import time_tracking.dao.DaoFactory;
 import time_tracking.model.entity.Activity;
 import time_tracking.service.ActivityService;
 import time_tracking.service.impl.DefaultActivityService;

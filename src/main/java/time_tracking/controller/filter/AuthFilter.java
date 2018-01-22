@@ -15,7 +15,7 @@ import java.util.EnumMap;
  * Filter checks every user request, to find out his permissions.
  * If user don't have permissions, the filter forward user to login page.
  */
-public class AuthFilter implements Filter{
+public class AuthFilter implements Filter {
     private static final String USER_NOT_AUTHORIZED = "User isn't authorized";
 
     private static EnumMap<RoleType, Authorizer> authorizeByRole = new EnumMap<>(RoleType.class);
@@ -26,14 +26,13 @@ public class AuthFilter implements Filter{
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException{
-        System.out.println("Auth filter"+". Thread : "+Thread.currentThread().getName());
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = ((HttpServletRequest) request);
         HttpSession session = req.getSession();
         String uri = req.getRequestURI();
         Object userId = session.getAttribute(Attributes.USER_ID);
-        RoleType roleType = (RoleType)session.getAttribute(Attributes.USER_ROLE);
-        if(!checkUserPermissions(uri, userId, roleType)){
+        RoleType roleType = (RoleType) session.getAttribute(Attributes.USER_ROLE);
+        if (!checkUserPermissions(uri, userId, roleType)) {
             req.getRequestDispatcher(PagesPath.LOGIN).forward(request, response);
             return;
         }
@@ -43,13 +42,14 @@ public class AuthFilter implements Filter{
 
     /**
      * this method check user permissions
+     *
      * @param uri
      * @param userId
      * @param roleType
      * @return
      */
-    private boolean checkUserPermissions(String uri, Object userId, RoleType roleType){
-        if(uri.endsWith(".css")||uri.endsWith(".js")||uri.endsWith(".png")) {
+    private boolean checkUserPermissions(String uri, Object userId, RoleType roleType) {
+        if (uri.endsWith(".css") || uri.endsWith(".js") || uri.endsWith(".png")) {
             return true;
         }
         Authorizer authorizer = authorizeByRole.getOrDefault(roleType, new AnonymAuthorizer());
@@ -62,29 +62,30 @@ public class AuthFilter implements Filter{
 
     private static class UserAuthorizer implements Authorizer {
         public boolean check(String uri, Object userId) {
-            return userId!=null && !uri.startsWith(PagesPath.ADMIN_HOME) && !uri.startsWith(PagesPath.MAKE_DECISION);
+            return userId != null && !uri.startsWith(PagesPath.ADMIN_HOME) && !uri.startsWith(PagesPath.MAKE_DECISION);
 
         }
     }
 
     private static class AdminAuthorizer implements Authorizer {
         public boolean check(String uri, Object userId) {
-            return  userId!=null && (uri.startsWith(PagesPath.ADMIN_HOME)||
-                    uri.startsWith(PagesPath.LOGIN)||
+            return userId != null && (uri.startsWith(PagesPath.ADMIN_HOME) ||
+                    uri.startsWith(PagesPath.LOGIN) ||
                     uri.startsWith(PagesPath.REGISTER) ||
                     uri.startsWith(PagesPath.MAKE_DECISION));
         }
     }
 
     private class AnonymAuthorizer implements Authorizer {
-        public boolean check(String uri, Object userId){
-            return  uri.startsWith(PagesPath.LOGIN)||
+        public boolean check(String uri, Object userId) {
+            return uri.startsWith(PagesPath.LOGIN) ||
                     uri.startsWith(PagesPath.REGISTER);
         }
     }
 
     /**
      * method which perform filter initialization
+     *
      * @param filterConfig
      * @throws ServletException
      */

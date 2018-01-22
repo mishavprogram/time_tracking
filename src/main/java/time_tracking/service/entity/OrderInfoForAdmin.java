@@ -9,7 +9,7 @@ public class OrderInfoForAdmin {
     private String action;
     private long activityId;
 
-    public OrderInfoForAdmin(){
+    public OrderInfoForAdmin() {
 
     }
 

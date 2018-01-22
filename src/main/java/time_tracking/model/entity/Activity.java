@@ -12,9 +12,10 @@ public class Activity extends Entity_With_Id {
 
     private StatusActivity status;
 
-    public Activity(){
+    public Activity() {
 
     }
+
     public Activity(long id, User user, String name, LocalDate startDate, LocalDate endDate, StatusActivity status) {
         super(id);
         this.user = user;
@@ -107,22 +108,22 @@ public class Activity extends Entity_With_Id {
             return this;
         }
 
-        public Builder setName(String name){
+        public Builder setName(String name) {
             instance.name = name;
             return this;
         }
 
-        public Builder setStartDate(LocalDate startDate){
+        public Builder setStartDate(LocalDate startDate) {
             instance.startDate = startDate;
             return this;
         }
 
-        public Builder setEndDate(LocalDate endDate){
+        public Builder setEndDate(LocalDate endDate) {
             instance.endDate = endDate;
             return this;
         }
 
-        public Builder setStatus(StatusActivity status){
+        public Builder setStatus(StatusActivity status) {
             instance.status = status;
             return this;
         }

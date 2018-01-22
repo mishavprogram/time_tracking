@@ -1,9 +1,7 @@
 package time_tracking.controller.commands.admin;
 
-import time_tracking.controller.commands.Command;
 import time_tracking.controller.commands.CommandExecutor;
 import time_tracking.model.entity.Activity;
-import time_tracking.model.entity.Order;
 import time_tracking.service.ActivityService;
 import time_tracking.service.AdminService;
 import time_tracking.service.impl.DefaultActivityService;
@@ -16,12 +14,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.file.OpenOption;
 import java.util.Optional;
 
 public class MakeDecisionCommand extends CommandExecutor {
-    ActivityService activityService = new DefaultActivityService();
-    AdminService adminService = new DefaultAdminService();
+    private ActivityService activityService = new DefaultActivityService();
+    private AdminService adminService = new DefaultAdminService();
 
     private RequestParamExtractor requestExtractor = new RequestParamExtractor();
 

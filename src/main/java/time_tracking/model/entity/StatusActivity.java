@@ -11,12 +11,12 @@ public enum StatusActivity {
         this.statusName = statusName;
     }
 
-    public String getStatusName(){
+    public String getStatusName() {
         return statusName;
     }
 
-    public static StatusActivity getStatusActivity(String statusName){
-        for(StatusActivity statusActivity:values()) {
+    public static StatusActivity getStatusActivity(String statusName) {
+        for (StatusActivity statusActivity : values()) {
             if (statusActivity.getStatusName().equals(statusName))
                 return statusActivity;
         }
