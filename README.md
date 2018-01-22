@@ -8,9 +8,8 @@
 
 # Архитектура приложения
 
-<li>MVC Webapp
 <li>three layer architecture
-<li>При разработке спользованы шаблоны: GoF (e.g. Builder, Singleton, Command, AbstractFactory)
+<li>При разработке спользованы шаблоны: GoF (e.g. Builder, Singleton, Command, AbstractFactory, MVC)
 <li>Сборка приложения происходит при помощи Apache Maven
 <li>Сервер для запуска - Apache Tomcat
 
