@@ -1,7 +1,5 @@
 package time_tracking.model.entity;
 
-import com.sun.istack.internal.Nullable;
-
 public enum StatusOrder {
     APPROVED("approved"),
     REJECTED("rejected"),
@@ -13,12 +11,12 @@ public enum StatusOrder {
         this.orderName = orderName;
     }
 
-    @Nullable
+
     public String getStatusName() {
         return orderName;
     }
 
-    @Nullable
+
     public static StatusOrder getStatusOrder(String statusName) {
         for (StatusOrder statusOrder : values()) {
             if (statusOrder.getStatusName().equals(statusName))

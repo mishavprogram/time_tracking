@@ -1,6 +1,5 @@
 package time_tracking.dao.mapper.impl;
 
-import com.sun.istack.internal.Nullable;
 import time_tracking.dao.mapper.ObjectMapper;
 import time_tracking.model.entity.*;
 
@@ -8,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class OrderMapper implements ObjectMapper<Order> {
-    @Nullable
     @Override
     public Order extractFromResultSet(ResultSet rs) throws SQLException {
         long id = rs.getLong(1);
