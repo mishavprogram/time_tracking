@@ -6,6 +6,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <fmt:setLocale value="${sessionScope['locale']}"/>
+    <fmt:requestEncoding value="UTF-8" />
+    <fmt:setBundle basename="${sessionScope['bundleFile']}" var="msg"/>
     <meta charset="utf-8" />
     <title>User page</title>
 
@@ -18,13 +21,13 @@
 <body>
     <div class="container">
         <header>
-            <h1 class="greeting">Hello, <c:out value="${sessionScope.get(\"userName\")} ${sessionScope.get(\"userSurname\")}!"/></h1>
+            <h1 class="greeting"><fmt:message key="hello" bundle="${msg}"/>, <c:out value="${sessionScope.get(\"userName\")} ${sessionScope.get(\"userSurname\")}!"/></h1>
             <nav class="navigation">
                 <form method="get" action="/userPage">
-                    <input type="submit" value="home">
+                    <input type="submit" value="<fmt:message key="home" bundle="${msg}"/>">
                 </form>
                 <form method="get" action="/logout">
-                    <input type="submit" value="log out">
+                    <input type="submit" value="<fmt:message key="logout" bundle="${msg}"/>">
                 </form>
             </nav>
             <select class="language">
@@ -41,7 +44,7 @@
                         <td>name</td>
                         <td>startDate</td>
                         <td>endDate</td>
-                        <td>hours</td><!--Треба якось брати к-сть годин-->
+                        <td>hours</td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -63,14 +66,13 @@
                     <h3><c:out value="${requestScope.get(\"date\").toString()}" /></h3>
                     <form method="get" action="/userPage">
                         <input type="date" name = "date">
-                        <input type="submit" value="chooseDay">
+                        <input type="submit" value="<fmt:message key="chooseDay" bundle="${msg}"/>">
                     </form>
                 </div>
                 <div class="buttons">
                     <form method="get" action="/addingActivity">
-                    <input type="submit" value="Add activity">
+                    <input type="submit" value="<fmt:message key="addAct" bundle="${msg}"/>">
                     </form>
-                    <input type="submit" value="All activities">
                 </div>
             </div>
         </section>

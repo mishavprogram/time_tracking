@@ -6,6 +6,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <fmt:setLocale value="${sessionScope['locale']}"/>
+    <fmt:requestEncoding value="UTF-8" />
+    <fmt:setBundle basename="${sessionScope['bundleFile']}" var="msg"/>
     <meta charset="utf-8" />
     <title>Admin page</title>
     
@@ -19,7 +22,7 @@
 <body>
     <div class="container">
         <header>
-            <h1 class="greeting">Hello, <c:out value="${sessionScope.get(\"userName\")} ${sessionScope.get(\"userSurname\")}!"/></h1>
+            <h1 class="greeting"><fmt:message key="hello" bundle="${msg}"/>, <c:out value="${sessionScope.get(\"userName\")} ${sessionScope.get(\"userSurname\")}!"/></h1>
             <nav class="navigation">
                 <form method="get" action="/adminPage">
                     <input type="submit" value="home">
@@ -57,16 +60,6 @@
                     </c:forEach>
                 </table>
                 <m:display paginParamName="page" totalPages="${pages}"/>
-            </div>
-            <div class="rightBlock">
-                <div class="calendar">
-                    <h3>Choose date:</h3>
-                    <input type="date">
-                </div>
-                <div class="buttons">
-                    <input type="submit" value="Add activity">
-                    <input type="submit" value="All activities">
-                </div>
             </div>
         </section>
     </div>
